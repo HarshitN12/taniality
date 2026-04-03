@@ -603,6 +603,8 @@
     <button class="nav-btn" onclick="goTab('skincare',this)">✨ Skincare</button>
     <button class="nav-btn" onclick="goTab('cat',this)">📚 CAT Prep</button>
     <button class="nav-btn" id="bday-nav-btn" onclick="goTab('birthday',this)">🎂 Birthday</button>
+    <button class="nav-btn" onclick="goTab('cycle',this)">🌸 Cycle</button>
+    <button class="nav-btn" onclick="goTab('letters',this)">💌 Letters</button>
   </div>
 
   <!-- HOME -->
@@ -896,6 +898,47 @@
     </div>
 
   </div>
+<!-- CYCLE -->
+<div class="section" id="sec-cycle">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon" style="background:#fce8ef;">🌸</div>
+      <div>
+        <div class="card-title">Cycle Tracker</div>
+        <div class="card-subtitle">Take care of yourself 💗</div>
+      </div>
+    </div>
+
+    <input type="date" id="cycle-date" class="inp">
+    <input type="number" id="cycle-length" class="inp" value="28">
+
+    <button class="btn btn-primary" onclick="saveCycle()">Save</button>
+
+    <div class="macro-box" style="margin-top:12px;">
+      <div class="macro-val" id="next-period">--</div>
+      <div class="macro-lbl">Next expected</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="sec-letters">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon" style="background:#fce8ef;">💌</div>
+      <div>
+        <div class="card-title">Letters from you</div>
+      </div>
+    </div>
+
+    <textarea id="letter-input" class="inp" placeholder="Write something..." style="min-height:100px;"></textarea>
+
+    <button class="btn btn-primary" style="margin-top:10px;" onclick="addLetter()">Save</button>
+  </div>
+
+  <div class="card">
+    <div id="letters-list"></div>
+  </div>
+</div>
 
 </div><!-- /wrap -->
 
@@ -1421,6 +1464,61 @@ function removeBucketItem(i) {
   save(); renderBucketList();
 }
 
+
+// ============ CYCLE============
+function saveCycle() {
+  S.cycle = {
+    date: document.getElementById('cycle-date').value,
+    length: parseInt(document.getElementById('cycle-length').value) || 28
+  };
+  save();
+  renderCycle();
+}
+
+function renderCycle() {
+  if (!S.cycle || !S.cycle.date) return;
+
+  const start = new Date(S.cycle.date);
+  const next = new Date(start);
+  next.setDate(start.getDate() + S.cycle.length);
+
+  document.getElementById('next-period').textContent =
+    next.toLocaleDateString('en-IN');
+}
+
+// ============ LETTERS ============
+function addLetter() {
+  const text = document.getElementById('letter-input').value.trim();
+  if (!text) return;
+
+  if (!S.letters) S.letters = [];
+
+  S.letters.unshift({
+    text,
+    date: new Date().toLocaleString('en-IN')
+  });
+
+  document.getElementById('letter-input').value = '';
+  save();
+  renderLetters();
+}
+
+function renderLetters() {
+  const el = document.getElementById('letters-list');
+  if (!S.letters || !S.letters.length) {
+    el.innerHTML = '<p style="color:var(--ink-muted);font-size:13px;">No letters yet 💌</p>';
+    return;
+  }
+
+  el.innerHTML = S.letters.map(l => `
+    <div class="log-entry">
+      <div class="log-dot"></div>
+      <div class="log-text">${l.text}</div>
+      <div class="log-time">${l.date}</div>
+    </div>
+  `).join('');
+}  
+
 // ============ SPLASH ============
 function hideSplash() {
   setTimeout(() => {
@@ -1442,6 +1540,8 @@ function init() {
   renderSkincare();
   renderCat();
   renderBirthday();
+  renderCycle();
+  renderLetters();
   updateOverview();
 
   // Highlight birthday nav if birthday is today or within 3 days
