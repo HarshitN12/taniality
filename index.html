@@ -4,596 +4,276 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Taniality</title>
-
-<!-- iOS PWA -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Taniality">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#fdf0f4">
-
-<!-- Inline SVG icon as data URI for iOS home screen -->
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjZmNlOGVmIi8+PHRleHQgeD0iOTAiIHk9IjExNSIgZm9udC1zaXplPSI5MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+MuDwvdGV4dD48L3N2Zz4=">
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjZmNlOGVmIi8+PHRleHQgeD0iOTAiIHk9IjExNSIgZm9udC1zaXplPSI5MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+MuDwvdGV4dD48L3N2Zz4=">
-
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --rose: #f4a7b9;
-    --rose-deep: #e07a96;
-    --rose-pale: #fdf0f4;
-    --blush: #fce8ef;
-    --lavender: #d9c6f0;
-    --lav-deep: #a98fd4;
-    --mint: #b8e8d4;
-    --mint-deep: #3daa7f;
-    --gold: #f5c97a;
-    --gold-deep: #c9922a;
-    --sky: #bcd9f5;
-    --sky-deep: #3d88d4;
-    --ink: #2d1f2e;
-    --ink-soft: #6b4c6e;
-    --ink-muted: #a07ca4;
-    --surface: #fffbfd;
-    --surface2: #fef5fa;
-    --card-bg: rgba(255,255,255,0.85);
-    --shadow: 0 4px 24px rgba(180,100,140,0.10);
-    --shadow-sm: 0 2px 10px rgba(180,100,140,0.08);
-    --radius: 20px;
-    --radius-sm: 12px;
-  }
+:root {
+  --rose:#f4a7b9; --rose-deep:#e07a96; --blush:#fce8ef;
+  --lavender:#d9c6f0; --lav-deep:#a98fd4;
+  --mint:#b8e8d4; --mint-deep:#3daa7f;
+  --gold:#f5c97a; --gold-deep:#c9922a;
+  --sky:#bcd9f5; --sky-deep:#3d88d4;
+  --ink:#2d1f2e; --ink-soft:#6b4c6e; --ink-muted:#a07ca4;
+  --surface:#fffbfd; --card-bg:rgba(255,255,255,0.88);
+  --shadow:0 4px 24px rgba(180,100,140,0.10);
+  --shadow-sm:0 2px 10px rgba(180,100,140,0.08);
+  --radius:20px; --radius-sm:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink);min-height:100vh;min-height:-webkit-fill-available;overflow-x:hidden;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 10% 10%,#fce8ef88 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 90% 20%,#d9c6f055 0%,transparent 60%),radial-gradient(ellipse 40% 60% at 80% 80%,#b8e8d433 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 20% 80%,#bcd9f533 0%,transparent 60%);pointer-events:none;z-index:0;}
+.petal{position:fixed;width:8px;height:8px;border-radius:80% 0 80% 0;opacity:0;animation:fall linear infinite;pointer-events:none;z-index:0;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:.6}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+#splash{position:fixed;inset:0;z-index:9999;background:#fdf0f4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .6s ease;}
+#splash.hidden{opacity:0;pointer-events:none;}
+#splash-emoji{font-size:72px;animation:splashPop .7s cubic-bezier(.34,1.56,.64,1) both;}
+#splash h1{font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);}
+#splash p{font-size:13px;color:var(--ink-muted);}
+#splash .love-tag{font-size:11px;color:var(--rose-deep);margin-top:4px;letter-spacing:.05em;}
+@keyframes splashPop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 16px 80px;}
+.header{text-align:center;padding:36px 0 12px;animation:fadeUp .8s ease both;}
+.header-date{font-size:12px;letter-spacing:.15em;color:var(--ink-muted);text-transform:uppercase;margin-bottom:10px;}
+.header h1{font-family:'Playfair Display',serif;font-size:34px;color:var(--ink);line-height:1.2;}
+.header h1 span{color:var(--rose-deep);font-style:italic;}
+.header-sub{font-size:13px;color:var(--ink-muted);margin-top:4px;}
+.header-love{font-size:11px;color:var(--rose-deep);margin-top:6px;letter-spacing:.06em;}
+.overview-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;animation:fadeUp .8s .1s ease both;}
+.chip{background:var(--card-bg);border-radius:var(--radius-sm);padding:14px 8px;text-align:center;box-shadow:var(--shadow-sm);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.8);transition:transform .2s;}
+.chip:hover{transform:translateY(-2px);}
+.chip-val{font-size:20px;font-weight:500;color:var(--ink);}
+.chip-lbl{font-size:10px;color:var(--ink-muted);margin-top:3px;letter-spacing:.05em;text-transform:uppercase;}
+.nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;animation:fadeUp .8s .15s ease both;}
+.nav-btn{padding:8px 14px;border-radius:50px;border:1.5px solid transparent;background:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--ink-soft);cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);backdrop-filter:blur(8px);}
+.nav-btn:hover{background:rgba(255,255,255,.95);color:var(--ink);}
+.nav-btn.active{background:var(--ink);color:white;border-color:var(--ink);}
+.section{display:none;animation:fadeUp .4s ease both;}
+.section.active{display:block;}
+.card{background:var(--card-bg);border-radius:var(--radius);padding:22px 24px;margin-bottom:16px;box-shadow:var(--shadow);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.9);}
+.card-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.card-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--ink);}
+.card-subtitle{font-size:12px;color:var(--ink-muted);margin-top:1px;}
+.prog-track{height:10px;background:#f0e6f0;border-radius:10px;overflow:hidden;margin:8px 0;}
+.prog-fill{height:100%;border-radius:10px;transition:width .5s cubic-bezier(.34,1.56,.64,1);}
+.food-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(180,100,140,.08);}
+.food-item:last-child{border-bottom:none;}
+.food-dot{width:8px;height:8px;border-radius:50%;background:var(--rose);flex-shrink:0;}
+.food-name{flex:1;font-size:14px;color:var(--ink);}
+.food-cal-badge{font-size:12px;font-weight:500;padding:3px 10px;background:var(--blush);color:var(--rose-deep);border-radius:50px;}
+.food-del{border:none;background:none;color:var(--ink-muted);cursor:pointer;font-size:16px;padding:0 4px;line-height:1;}
+.food-del:hover{color:#e07a96;}
+.input-row{display:flex;gap:8px;flex-wrap:wrap;}
+.inp{flex:1;min-width:80px;padding:10px 14px;border:1.5px solid rgba(180,100,140,.15);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;background:rgba(255,255,255,.8);color:var(--ink);outline:none;transition:border-color .2s;}
+.inp:focus{border-color:var(--rose-deep);}
+.inp::placeholder{color:var(--ink-muted);}
+textarea.inp{resize:vertical;min-height:80px;line-height:1.6;}
+.btn{padding:10px 18px;border-radius:var(--radius-sm);border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.btn-primary{background:var(--ink);color:white;}
+.btn-primary:hover{background:var(--ink-soft);transform:translateY(-1px);}
+.btn-rose{background:var(--rose);color:var(--ink);}
+.btn-rose:hover{background:var(--rose-deep);color:white;}
+.drops-grid{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;}
+.drop-btn{width:40px;height:40px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid rgba(61,136,212,.3);background:rgba(188,217,245,.2);cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;}
+.drop-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#3d88d4,#bcd9f5);opacity:0;transition:opacity .2s;}
+.drop-btn.filled{border-color:#3d88d4;transform:rotate(-45deg) scale(1.05);}
+.drop-btn.filled::after{opacity:1;}
+.drop-btn:hover{transform:rotate(-45deg) scale(1.1);}
+.meal-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(180,100,140,.08);}
+.meal-row:last-child{border-bottom:none;}
+.meal-emoji{font-size:20px;width:28px;text-align:center;flex-shrink:0;}
+.meal-tag{font-size:11px;font-weight:500;color:var(--ink-muted);min-width:80px;text-transform:uppercase;letter-spacing:.05em;}
+.meal-inp{flex:1;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;}
+.meal-inp::placeholder{color:var(--ink-muted);}
+.rem-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(180,100,140,.08);transition:opacity .2s;}
+.rem-item:last-child{border-bottom:none;}
+.rem-item.done .rem-text{text-decoration:line-through;opacity:.45;}
+.rem-color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.rem-text{flex:1;font-size:14px;color:var(--ink);}
+.rem-time{font-size:12px;color:var(--ink-muted);padding:3px 8px;background:rgba(180,100,140,.07);border-radius:50px;}
+.rem-check{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(180,100,140,.25);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .18s;flex-shrink:0;}
+.rem-check.done{background:var(--mint-deep);border-color:var(--mint-deep);color:white;}
+.skin-step{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(180,100,140,.08);cursor:pointer;transition:opacity .2s;}
+.skin-step:last-child{border-bottom:none;}
+.skin-step.done .skin-name{text-decoration:line-through;opacity:.45;}
+.skin-num{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;transition:all .18s;}
+.skin-step.done .skin-num{background:var(--mint-deep)!important;color:white!important;}
+.skin-name{flex:1;font-size:14px;color:var(--ink);}
+.skin-check-icon{font-size:16px;}
+.cat-topic-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(180,100,140,.08);}
+.cat-topic-item:last-child{border-bottom:none;}
+.cat-section-badge{font-size:10px;font-weight:500;padding:3px 8px;border-radius:50px;letter-spacing:.04em;flex-shrink:0;}
+.badge-quant{background:#fce8ef;color:#c0386a;}
+.badge-varc{background:#d9c6f0;color:#6b35b0;}
+.badge-dilr{background:#b8e8d4;color:#1f7a56;}
+.cat-topic-name{flex:1;font-size:14px;color:var(--ink);}
+.status-pill{font-size:11px;font-weight:500;padding:4px 12px;border-radius:50px;cursor:pointer;transition:all .18s;}
+.status-todo{background:rgba(180,100,140,.1);color:var(--ink-soft);}
+.status-wip{background:#f5c97a44;color:#c9922a;}
+.status-done{background:#b8e8d4;color:#1f7a56;}
+.streak-row{display:flex;gap:6px;margin:12px 0;}
+.streak-cell{flex:1;aspect-ratio:1;border-radius:8px;border:1.5px solid rgba(180,100,140,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;color:var(--ink-muted);font-weight:500;text-transform:uppercase;letter-spacing:.05em;gap:3px;transition:all .2s;}
+.streak-cell .sc-dot{width:6px;height:6px;border-radius:50%;background:rgba(180,100,140,.15);}
+.streak-cell.done{background:linear-gradient(135deg,var(--mint),var(--mint-deep));border-color:var(--mint-deep);color:white;}
+.streak-cell.done .sc-dot{background:white;}
+.log-entry{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(180,100,140,.08);}
+.log-entry:last-child{border-bottom:none;}
+.log-dot{width:6px;height:6px;border-radius:50%;background:var(--lav-deep);margin-top:5px;flex-shrink:0;}
+.log-text{flex:1;font-size:13px;color:var(--ink);line-height:1.5;}
+.log-time{font-size:11px;color:var(--ink-muted);}
+.macro-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+.macro-box{background:rgba(180,100,140,.06);border-radius:var(--radius-sm);padding:12px;text-align:center;}
+.macro-val{font-size:18px;font-weight:500;color:var(--ink);}
+.macro-lbl{font-size:11px;color:var(--ink-muted);margin-top:2px;}
+.quote-card{background:linear-gradient(135deg,#fce8ef,#d9c6f0);border-radius:var(--radius);padding:22px 24px;margin-bottom:16px;position:relative;overflow:hidden;}
+.quote-card::before{content:'\201C';position:absolute;top:-10px;left:14px;font-family:'Playfair Display',serif;font-size:100px;color:rgba(255,255,255,.4);line-height:1;}
+.quote-text{font-family:'Playfair Display',serif;font-size:16px;font-style:italic;color:var(--ink);line-height:1.6;position:relative;z-index:1;}
+.quote-attr{font-size:12px;color:var(--ink-soft);margin-top:8px;}
+.med-banner{background:linear-gradient(135deg,#fce8ef,#fdf0f4);border:1.5px solid var(--rose);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.med-icon{font-size:28px;flex-shrink:0;}
+.med-text h3{font-size:14px;font-weight:500;color:var(--ink);}
+.med-text p{font-size:12px;color:var(--ink-muted);margin-top:2px;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* PERIOD */
+.cycle-phase-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+.phase-card{border-radius:var(--radius-sm);padding:14px;border:1.5px solid transparent;transition:all .2s;cursor:default;}
+.phase-card.active-phase{border-width:2px;}
+.phase-menstrual{background:#fce8ef;border-color:#e07a96;}
+.phase-follicular{background:#fdf0f4;border-color:#d9c6f0;}
+.phase-ovulation{background:#eaf3de;border-color:#3daa7f;}
+.phase-luteal{background:#faeeda;border-color:#c9922a;}
+.phase-name{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:3px;}
+.phase-days{font-size:11px;color:var(--ink-muted);}
+.phase-tip{font-size:11px;color:var(--ink-soft);margin-top:5px;line-height:1.4;}
+.cycle-ring-wrap{display:flex;justify-content:center;margin:16px 0;}
+.cycle-ring{position:relative;width:160px;height:160px;}
+.cycle-ring svg{position:absolute;top:0;left:0;}
+.cycle-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.cycle-day-num{font-size:32px;font-weight:500;color:var(--ink);line-height:1;}
+.cycle-day-lbl{font-size:11px;color:var(--ink-muted);margin-top:2px;}
+.cycle-phase-tag{font-size:12px;font-weight:500;color:var(--rose-deep);margin-top:4px;}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--surface);
-    color: var(--ink);
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    overflow-x: hidden;
-    /* iOS safe area */
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+/* MESSAGES FROM HARSHIT */
+.msg-item{background:linear-gradient(135deg,rgba(244,167,185,.1),rgba(217,198,240,.1));border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--rose-deep);position:relative;}
+.msg-text{font-size:14px;color:var(--ink);line-height:1.7;white-space:pre-wrap;}
+.msg-meta{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.msg-date{font-size:11px;color:var(--ink-muted);}
+.msg-from{font-size:11px;color:var(--rose-deep);font-weight:500;}
+.msg-del{position:absolute;top:10px;right:10px;border:none;background:none;color:var(--ink-muted);cursor:pointer;font-size:16px;}
 
-  /* iOS splash screen feel */
-  #splash {
-    position: fixed; inset: 0; z-index: 9999;
-    background: #fdf0f4;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 16px;
-    transition: opacity 0.6s ease;
-  }
-  #splash.hidden { opacity: 0; pointer-events: none; }
-  #splash-emoji { font-size: 72px; animation: splashPop 0.7s cubic-bezier(0.34,1.56,0.64,1) both; }
-  #splash h1 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); text-align: center; }
-  #splash p { font-size: 14px; color: var(--ink-muted); }
-  @keyframes splashPop {
-    from { transform: scale(0.4); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
+/* DATE PLANNER */
+.date-plan-item{border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;background:linear-gradient(135deg,rgba(217,198,240,.15),rgba(184,232,212,.1));border:1px solid rgba(180,100,140,.12);position:relative;}
+.date-plan-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.date-plan-date{font-size:12px;font-weight:500;color:var(--lav-deep);background:rgba(169,143,212,.12);padding:3px 10px;border-radius:50px;}
+.date-plan-place{font-size:15px;font-weight:500;color:var(--ink);flex:1;}
+.date-plan-outfit{font-size:13px;color:var(--ink-soft);margin-top:4px;display:flex;align-items:flex-start;gap:6px;}
+.outfit-emoji{font-size:16px;flex-shrink:0;}
 
-  /* Dreamy background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 40% at 10% 10%, #fce8ef88 0%, transparent 60%),
-      radial-gradient(ellipse 50% 50% at 90% 20%, #d9c6f055 0%, transparent 60%),
-      radial-gradient(ellipse 40% 60% at 80% 80%, #b8e8d433 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 20% 80%, #bcd9f533 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-  }
+/* GOSSIP */
+.gossip-item{background:rgba(245,201,122,.12);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--gold-deep);position:relative;}
+.gossip-text{font-size:14px;color:var(--ink);line-height:1.7;white-space:pre-wrap;}
+.gossip-tag{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:50px;background:rgba(201,146,42,.15);color:var(--gold-deep);margin-top:6px;}
+.gossip-del{position:absolute;top:10px;right:10px;border:none;background:none;color:var(--ink-muted);cursor:pointer;font-size:16px;}
 
-  /* Floating petals */
-  .petal {
-    position: fixed;
-    width: 8px; height: 8px;
-    border-radius: 80% 0 80% 0;
-    opacity: 0;
-    animation: fall linear infinite;
-    pointer-events: none;
-    z-index: 0;
-  }
-  @keyframes fall {
-    0% { transform: translateY(-20px) rotate(0deg); opacity: 0.6; }
-    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-  }
+/* CALENDAR */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cal-nav-btn{border:none;background:none;font-size:20px;cursor:pointer;color:var(--ink-soft);padding:4px 10px;border-radius:8px;transition:background .15s;}
+.cal-nav-btn:hover{background:rgba(180,100,140,.1);}
+.cal-month-lbl{font-family:'Playfair Display',serif;font-size:18px;color:var(--ink);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-dow{font-size:10px;text-align:center;color:var(--ink-muted);font-weight:500;padding:4px 0;letter-spacing:.04em;text-transform:uppercase;}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:13px;cursor:pointer;transition:all .15s;position:relative;color:var(--ink);}
+.cal-day:hover{background:rgba(180,100,140,.1);}
+.cal-day.other-month{color:var(--ink-muted);opacity:.4;}
+.cal-day.today{background:var(--blush);color:var(--rose-deep);font-weight:500;}
+.cal-day.special-deep{background:var(--rose-deep)!important;color:white!important;font-weight:500;}
+.cal-day.special-light{background:#fce8ef;color:var(--rose-deep);}
+.cal-day.period-day{border:2px solid var(--rose-deep);}
+.cal-day.fertile-day::after{content:'';position:absolute;bottom:2px;width:4px;height:4px;border-radius:50%;background:var(--mint-deep);}
+.cal-event-dot{width:4px;height:4px;border-radius:50%;background:var(--rose-deep);position:absolute;bottom:2px;}
+.cal-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-muted);}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.special-event-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(180,100,140,.08);}
+.special-event-item:last-child{border-bottom:none;}
+.special-event-date{font-size:12px;font-weight:500;color:var(--rose-deep);min-width:80px;}
+.special-event-name{flex:1;font-size:14px;color:var(--ink);}
+.special-event-del{border:none;background:none;color:var(--ink-muted);cursor:pointer;font-size:15px;}
 
-  .wrap { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
-
-  /* Header */
-  .header {
-    text-align: center;
-    padding: 36px 0 28px;
-    animation: fadeUp 0.8s ease both;
-  }
-  .header-date { font-size: 12px; letter-spacing: 0.15em; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 10px; }
-  .header h1 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--ink); line-height: 1.2; }
-  .header h1 span { color: var(--rose-deep); font-style: italic; }
-  .header-sub { font-size: 14px; color: var(--ink-muted); margin-top: 8px; }
-
-  /* Overview chips */
-  .overview-chips {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 24px;
-    animation: fadeUp 0.8s 0.1s ease both;
-  }
-  .chip {
-    background: var(--card-bg);
-    border-radius: var(--radius-sm);
-    padding: 14px 10px;
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.8);
-    transition: transform 0.2s;
-  }
-  .chip:hover { transform: translateY(-2px); }
-  .chip-val { font-size: 22px; font-weight: 500; color: var(--ink); }
-  .chip-lbl { font-size: 10px; color: var(--ink-muted); margin-top: 3px; letter-spacing: 0.05em; text-transform: uppercase; }
-
-  /* Nav tabs */
-  .nav {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 24px;
-    animation: fadeUp 0.8s 0.15s ease both;
-  }
-  .nav-btn {
-    padding: 8px 16px;
-    border-radius: 50px;
-    border: 1.5px solid transparent;
-    background: rgba(255,255,255,0.7);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--ink-soft);
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(8px);
-  }
-  .nav-btn:hover { background: rgba(255,255,255,0.95); color: var(--ink); }
-  .nav-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
-
-  /* Sections */
-  .section { display: none; animation: fadeUp 0.4s ease both; }
-  .section.active { display: block; }
-
-  /* Cards */
-  .card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    padding: 22px 24px;
-    margin-bottom: 16px;
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.9);
-  }
-  .card-head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-  .card-icon {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  .card-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; color: var(--ink); }
-  .card-subtitle { font-size: 12px; color: var(--ink-muted); margin-top: 1px; }
-
-  /* Progress bars */
-  .prog-track { height: 10px; background: #f0e6f0; border-radius: 10px; overflow: hidden; margin: 8px 0; }
-  .prog-fill { height: 100%; border-radius: 10px; transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-
-  /* Calorie log */
-  .food-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(180,100,140,0.08); }
-  .food-item:last-child { border-bottom: none; }
-  .food-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); flex-shrink: 0; }
-  .food-name { flex: 1; font-size: 14px; color: var(--ink); }
-  .food-cal-badge { font-size: 12px; font-weight: 500; padding: 3px 10px; background: var(--blush); color: var(--rose-deep); border-radius: 50px; }
-  .food-del { border: none; background: none; color: var(--ink-muted); cursor: pointer; font-size: 16px; padding: 0 4px; line-height: 1; }
-  .food-del:hover { color: #e07a96; }
-
-  /* Input row */
-  .input-row { display: flex; gap: 8px; flex-wrap: wrap; }
-  .inp {
-    flex: 1;
-    min-width: 100px;
-    padding: 10px 14px;
-    border: 1.5px solid rgba(180,100,140,0.15);
-    border-radius: var(--radius-sm);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    background: rgba(255,255,255,0.8);
-    color: var(--ink);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .inp:focus { border-color: var(--rose-deep); }
-  .inp::placeholder { color: var(--ink-muted); }
-  .btn {
-    padding: 10px 18px;
-    border-radius: var(--radius-sm);
-    border: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.18s;
-    white-space: nowrap;
-  }
-  .btn-primary { background: var(--ink); color: white; }
-  .btn-primary:hover { background: var(--ink-soft); transform: translateY(-1px); }
-  .btn-rose { background: var(--rose); color: var(--ink); }
-  .btn-rose:hover { background: var(--rose-deep); color: white; }
-
-  /* Water drops */
-  .drops-grid { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
-  .drop-btn {
-    width: 40px; height: 40px;
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    border: 2px solid rgba(61,136,212,0.3);
-    background: rgba(188,217,245,0.2);
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
-    position: relative;
-    overflow: hidden;
-  }
-  .drop-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #3d88d4, #bcd9f5);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .drop-btn.filled { border-color: #3d88d4; background: rgba(61,136,212,0.15); transform: rotate(-45deg) scale(1.05); }
-  .drop-btn.filled::after { opacity: 1; }
-  .drop-btn:hover { transform: rotate(-45deg) scale(1.1); }
-
-  /* Meal slots */
-  .meal-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(180,100,140,0.08);
-  }
-  .meal-row:last-child { border-bottom: none; }
-  .meal-emoji { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
-  .meal-tag { font-size: 11px; font-weight: 500; color: var(--ink-muted); min-width: 80px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .meal-inp {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: var(--ink);
-    outline: none;
-  }
-  .meal-inp::placeholder { color: var(--ink-muted); }
-
-  /* Reminders */
-  .rem-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(180,100,140,0.08);
-    transition: opacity 0.2s;
-  }
-  .rem-item:last-child { border-bottom: none; }
-  .rem-item.done .rem-text { text-decoration: line-through; opacity: 0.45; }
-  .rem-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .rem-text { flex: 1; font-size: 14px; color: var(--ink); }
-  .rem-time { font-size: 12px; color: var(--ink-muted); padding: 3px 8px; background: rgba(180,100,140,0.07); border-radius: 50px; }
-  .rem-check {
-    width: 22px; height: 22px;
-    border-radius: 6px;
-    border: 1.5px solid rgba(180,100,140,0.25);
-    background: transparent;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    transition: all 0.18s;
-    flex-shrink: 0;
-  }
-  .rem-check.done { background: var(--mint-deep); border-color: var(--mint-deep); color: white; }
-
-  /* Skincare */
-  .skin-step {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(180,100,140,0.08);
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  .skin-step:last-child { border-bottom: none; }
-  .skin-step.done .skin-name { text-decoration: line-through; opacity: 0.45; }
-  .skin-num {
-    width: 26px; height: 26px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 500;
-    flex-shrink: 0;
-    transition: all 0.18s;
-  }
-  .skin-step.done .skin-num { background: var(--mint-deep) !important; color: white !important; }
-  .skin-name { flex: 1; font-size: 14px; color: var(--ink); }
-  .skin-check-icon { font-size: 16px; transition: all 0.18s; }
-  .skin-step.done .skin-check-icon { filter: none; }
-
-  /* CAT topics */
-  .cat-topic-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(180,100,140,0.08);
-  }
-  .cat-topic-item:last-child { border-bottom: none; }
-  .cat-section-badge {
-    font-size: 10px; font-weight: 500;
-    padding: 3px 8px;
-    border-radius: 50px;
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
-  .badge-quant { background: #fce8ef; color: #c0386a; }
-  .badge-varc { background: #d9c6f0; color: #6b35b0; }
-  .badge-dilr { background: #b8e8d4; color: #1f7a56; }
-  .cat-topic-name { flex: 1; font-size: 14px; color: var(--ink); }
-  .status-pill {
-    font-size: 11px; font-weight: 500;
-    padding: 4px 12px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.18s;
-  }
-  .status-todo { background: rgba(180,100,140,0.1); color: var(--ink-soft); }
-  .status-wip { background: #f5c97a44; color: #c9922a; }
-  .status-done { background: #b8e8d4; color: #1f7a56; }
-
-  /* Streak */
-  .streak-row { display: flex; gap: 6px; margin: 12px 0; }
-  .streak-cell {
-    flex: 1;
-    aspect-ratio: 1;
-    border-radius: 8px;
-    border: 1.5px solid rgba(180,100,140,0.15);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    font-size: 9px; color: var(--ink-muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    gap: 3px;
-    transition: all 0.2s;
-  }
-  .streak-cell .sc-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(180,100,140,0.15); }
-  .streak-cell.done { background: linear-gradient(135deg, var(--mint), var(--mint-deep)); border-color: var(--mint-deep); color: white; }
-  .streak-cell.done .sc-dot { background: white; }
-
-  /* Log entries */
-  .log-entry { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(180,100,140,0.08); }
-  .log-entry:last-child { border-bottom: none; }
-  .log-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lav-deep); margin-top: 5px; flex-shrink: 0; }
-  .log-text { flex: 1; font-size: 13px; color: var(--ink); line-height: 1.5; }
-  .log-time { font-size: 11px; color: var(--ink-muted); }
-
-  /* Quote */
-  .quote-card {
-    background: linear-gradient(135deg, #fce8ef, #d9c6f0);
-    border-radius: var(--radius);
-    padding: 22px 24px;
-    margin-bottom: 16px;
-    position: relative;
-    overflow: hidden;
-  }
-  .quote-card::before {
-    content: '\201C';
-    position: absolute;
-    top: -10px; left: 14px;
-    font-family: 'Playfair Display', serif;
-    font-size: 100px;
-    color: rgba(255,255,255,0.4);
-    line-height: 1;
-  }
-  .quote-text { font-family: 'Playfair Display', serif; font-size: 16px; font-style: italic; color: var(--ink); line-height: 1.6; position: relative; z-index: 1; }
-  .quote-attr { font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
-
-  /* Medicine reminder card */
-  .med-banner {
-    background: linear-gradient(135deg, #fce8ef, #fdf0f4);
-    border: 1.5px solid var(--rose);
-    border-radius: var(--radius);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 16px;
-  }
-  .med-icon { font-size: 28px; flex-shrink: 0; }
-  .med-text h3 { font-size: 14px; font-weight: 500; color: var(--ink); }
-  .med-text p { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
-
-  /* Macros row */
-  .macro-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
-  .macro-box { background: rgba(180,100,140,0.06); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
-  .macro-val { font-size: 18px; font-weight: 500; color: var(--ink); }
-  .macro-lbl { font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
-
-  /* Animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes pop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.18); }
-    100% { transform: scale(1); }
-  }
-  .pop { animation: pop 0.3s ease; }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    bottom: 24px; left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--ink);
-    color: white;
-    padding: 10px 22px;
-    border-radius: 50px;
-    font-size: 13px;
-    z-index: 999;
-    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-    white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* Responsive */
-  @media (max-width: 500px) {
-    .overview-chips { grid-template-columns: repeat(2, 1fr); }
-    .header h1 { font-size: 28px; }
-    .nav-btn { font-size: 12px; padding: 7px 12px; }
-  }
-
-  /* ===== BIRTHDAY ===== */
-  .bday-hero {
-    border-radius: var(--radius);
-    padding: 32px 24px;
-    text-align: center;
-    margin-bottom: 16px;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, #fce8ef, #d9c6f0, #b8e8d4);
-    background-size: 300% 300%;
-    animation: bdayGrad 6s ease infinite;
-  }
-  @keyframes bdayGrad {
-    0%,100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-  .bday-countdown { font-size: 52px; font-weight: 500; color: var(--ink); line-height: 1; }
-  .bday-count-lbl { font-size: 13px; color: var(--ink-soft); margin-top: 4px; letter-spacing: 0.1em; text-transform: uppercase; }
-  .bday-its-today { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); font-style: italic; }
-  .cake-wrapper { font-size: 80px; margin: 12px 0; display: block; animation: cakeBounce 1.4s ease infinite; }
-  @keyframes cakeBounce {
-    0%,100% { transform: translateY(0) rotate(-3deg); }
-    50% { transform: translateY(-10px) rotate(3deg); }
-  }
-  .confetti-strip { display: flex; justify-content: center; gap: 8px; font-size: 22px; margin: 8px 0; animation: confettiSpin 2s linear infinite; }
-  @keyframes confettiSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  .bday-wishes {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    padding: 22px 24px;
-    margin-bottom: 16px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255,255,255,0.9);
-  }
-  .wish-item { padding: 12px 0; border-bottom: 1px solid rgba(180,100,140,0.08); font-size: 14px; color: var(--ink); line-height: 1.7; }
-  .wish-item:last-child { border-bottom: none; }
-  .wish-emoji { font-size: 20px; margin-right: 8px; }
-  .bday-candles { display: flex; justify-content: center; gap: 10px; margin: 16px 0; }
-  .candle { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
-  .candle-flame { font-size: 18px; transition: all 0.3s; }
-  .candle-flame.blown { filter: grayscale(1); opacity: 0.3; }
-  .candle-body { width: 14px; height: 36px; border-radius: 4px; }
-  .candle-base { width: 18px; height: 6px; border-radius: 3px; background: #f5c97a; }
-  .blow-btn {
-    margin: 0 auto; display: block;
-    padding: 12px 28px;
-    background: linear-gradient(135deg, var(--rose), var(--lav-deep));
-    color: white; border: none;
-    border-radius: 50px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 500;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  .blow-btn:hover { transform: scale(1.05); }
-  .fireworks { position: fixed; inset: 0; pointer-events: none; z-index: 100; }
-  .fw { position: absolute; font-size: 28px; animation: fwFly 1.2s ease-out forwards; }
-  @keyframes fwFly {
-    0% { transform: scale(0) rotate(0deg); opacity: 1; }
-    100% { transform: scale(1.5) rotate(180deg) translateY(-60px); opacity: 0; }
-  }
+/* BIRTHDAY */
+.bday-hero{border-radius:var(--radius);padding:32px 24px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden;background:linear-gradient(135deg,#fce8ef,#d9c6f0,#b8e8d4);background-size:300% 300%;animation:bdayGrad 6s ease infinite;}
+@keyframes bdayGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.bday-countdown{font-size:52px;font-weight:500;color:var(--ink);line-height:1;}
+.bday-count-lbl{font-size:13px;color:var(--ink-soft);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;}
+.bday-its-today{font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);font-style:italic;}
+.cake-wrapper{font-size:80px;margin:12px 0;display:block;animation:cakeBounce 1.4s ease infinite;}
+@keyframes cakeBounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+.confetti-strip{display:flex;justify-content:center;gap:8px;font-size:22px;margin:8px 0;animation:confettiSpin 2s linear infinite;}
+@keyframes confettiSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.bday-wishes{background:var(--card-bg);border-radius:var(--radius);padding:22px 24px;margin-bottom:16px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.9);}
+.wish-item{padding:12px 0;border-bottom:1px solid rgba(180,100,140,.08);font-size:14px;color:var(--ink);line-height:1.7;}
+.wish-item:last-child{border-bottom:none;}
+.wish-emoji{font-size:20px;margin-right:8px;}
+.bday-candles{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:16px 0;}
+.candle{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;}
+.candle-flame{font-size:16px;transition:all .3s;}
+.candle-flame.blown{filter:grayscale(1);opacity:.3;}
+.candle-body{width:12px;height:32px;border-radius:4px;}
+.candle-base{width:16px;height:5px;border-radius:3px;background:#f5c97a;}
+.blow-btn{margin:0 auto;display:block;padding:12px 28px;background:linear-gradient(135deg,var(--rose),var(--lav-deep));color:white;border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:transform .2s;}
+.blow-btn:hover{transform:scale(1.05);}
+.fireworks{position:fixed;inset:0;pointer-events:none;z-index:100;}
+.fw{position:absolute;font-size:28px;animation:fwFly 1.2s ease-out forwards;}
+@keyframes fwFly{0%{transform:scale(0) rotate(0deg);opacity:1}100%{transform:scale(1.5) rotate(180deg) translateY(-60px);opacity:0}}
+.with-love{text-align:center;font-size:11px;color:var(--rose-deep);letter-spacing:.06em;margin-top:8px;opacity:.8;}
+.footer-love{text-align:center;padding:24px 0 8px;font-size:12px;color:var(--ink-muted);}
+.footer-love span{color:var(--rose-deep);font-weight:500;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:white;padding:10px 22px;border-radius:50px;font-size:13px;z-index:999;transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+select.inp{appearance:none;}
+@media(max-width:500px){.overview-chips{grid-template-columns:repeat(2,1fr);}.header h1{font-size:26px;}.nav-btn{font-size:11px;padding:7px 10px;}.cycle-phase-cards{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<!-- iOS Splash -->
 <div id="splash">
   <div id="splash-emoji">🌸</div>
   <h1>Taniality</h1>
   <p>My little universe</p>
+  <div class="love-tag">made with love by Harshit ♥</div>
 </div>
 
-<!-- Fireworks container -->
 <div class="fireworks" id="fireworks"></div>
 
-<!-- Petals -->
 <script>
-  const colors = ['#f4a7b9','#d9c6f0','#b8e8d4','#f5c97a','#bcd9f5'];
-  for (let i = 0; i < 14; i++) {
-    const p = document.createElement('div');
-    p.className = 'petal';
-    p.style.cssText = `left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-duration:${8+Math.random()*10}s;animation-delay:${Math.random()*12}s;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;`;
-    document.body.appendChild(p);
-  }
+const colors=['#f4a7b9','#d9c6f0','#b8e8d4','#f5c97a','#bcd9f5'];
+for(let i=0;i<14;i++){const p=document.createElement('div');p.className='petal';p.style.cssText=`left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-duration:${8+Math.random()*10}s;animation-delay:${Math.random()*12}s;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;`;document.body.appendChild(p);}
 </script>
 
 <div class="wrap">
 
-  <!-- Header -->
   <div class="header">
     <div class="header-date" id="hdate"></div>
     <h1>Taniality <span>✨</span></h1>
     <div class="header-sub">My little universe</div>
+    <div class="header-love">made with love by Harshit ♥</div>
   </div>
 
-  <!-- Overview chips -->
   <div class="overview-chips">
-    <div class="chip">
-      <div class="chip-val" id="ov-cal">0</div>
-      <div class="chip-lbl">Calories</div>
-    </div>
-    <div class="chip">
-      <div class="chip-val" id="ov-water">0/8</div>
-      <div class="chip-lbl">Water</div>
-    </div>
-    <div class="chip">
-      <div class="chip-val" id="ov-skin">0%</div>
-      <div class="chip-lbl">Skincare</div>
-    </div>
-    <div class="chip">
-      <div class="chip-val" id="ov-cat">0%</div>
-      <div class="chip-lbl">CAT prep</div>
-    </div>
+    <div class="chip"><div class="chip-val" id="ov-cal">0</div><div class="chip-lbl">Calories</div></div>
+    <div class="chip"><div class="chip-val" id="ov-water">0/8</div><div class="chip-lbl">Water</div></div>
+    <div class="chip"><div class="chip-val" id="ov-skin">0%</div><div class="chip-lbl">Skincare</div></div>
+    <div class="chip"><div class="chip-val" id="ov-cat">0%</div><div class="chip-lbl">CAT prep</div></div>
   </div>
 
-  <!-- Nav -->
   <div class="nav">
     <button class="nav-btn active" onclick="goTab('home',this)">🏠 Home</button>
     <button class="nav-btn" onclick="goTab('calories',this)">🍽 Calories</button>
@@ -602,58 +282,51 @@
     <button class="nav-btn" onclick="goTab('reminders',this)">⏰ Reminders</button>
     <button class="nav-btn" onclick="goTab('skincare',this)">✨ Skincare</button>
     <button class="nav-btn" onclick="goTab('cat',this)">📚 CAT Prep</button>
+    <button class="nav-btn" onclick="goTab('period',this)">🌙 Cycle</button>
+    <button class="nav-btn" onclick="goTab('messages',this)">💌 His Texts</button>
+    <button class="nav-btn" onclick="goTab('dates',this)">🌹 Date Plans</button>
+    <button class="nav-btn" onclick="goTab('gossip',this)">🤫 Gossip</button>
+    <button class="nav-btn" onclick="goTab('calendar',this)">🗓 Calendar</button>
     <button class="nav-btn" id="bday-nav-btn" onclick="goTab('birthday',this)">🎂 Birthday</button>
-    <button class="nav-btn" onclick="goTab('cycle',this)">🌸 Cycle</button>
-    <button class="nav-btn" onclick="goTab('letters',this)">💌 Letters</button>
   </div>
 
   <!-- HOME -->
   <div class="section active" id="sec-home">
-
     <div class="quote-card">
-      <div class="quote-text" id="daily-quote">Loading your quote...</div>
+      <div class="quote-text" id="daily-quote"></div>
       <div class="quote-attr" id="quote-attr"></div>
     </div>
-
     <div class="med-banner">
       <div class="med-icon">💊</div>
-      <div class="med-text">
-        <h3>Medicine reminder</h3>
-        <p id="med-status">Check reminders tab for pending medicines</p>
-      </div>
+      <div class="med-text"><h3>Medicine reminder</h3><p id="med-status">Check reminders tab</p></div>
     </div>
-
     <div class="card">
       <div class="card-head">
         <div class="card-icon" style="background:#fce8ef;">📋</div>
-        <div>
-          <div class="card-title">Today at a glance</div>
-          <div class="card-subtitle">Your pending items</div>
-        </div>
+        <div><div class="card-title">Today at a glance</div><div class="card-subtitle">Your pending items</div></div>
       </div>
       <div id="home-summary"></div>
     </div>
-
+    <div class="card" style="background:linear-gradient(135deg,rgba(217,198,240,.2),rgba(244,167,185,.1));">
+      <div class="card-head">
+        <div class="card-icon" style="background:#d9c6f0;">🌙</div>
+        <div><div class="card-title">Cycle today</div><div class="card-subtitle" id="home-cycle-sub">Log your cycle to see details</div></div>
+      </div>
+      <div id="home-cycle-info" style="font-size:13px;color:var(--ink-soft);"></div>
+    </div>
+    <div class="with-love">♥ made with love by Harshit</div>
   </div>
 
   <!-- CALORIES -->
   <div class="section" id="sec-calories">
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fce8ef;">🔥</div>
-        <div>
-          <div class="card-title">Calorie tracker</div>
-          <div class="card-subtitle" id="cal-subtitle">Loading...</div>
-        </div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">🔥</div><div><div class="card-title">Calorie tracker</div><div class="card-subtitle" id="cal-subtitle">Loading...</div></div></div>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <span style="font-size:13px;color:var(--ink-muted);">Daily goal:</span>
         <input type="number" id="cal-goal" class="inp" style="width:90px;flex:none;" value="1800" oninput="save();renderCalories();">
         <span style="font-size:13px;color:var(--ink-muted);">kcal</span>
       </div>
-      <div class="prog-track">
-        <div class="prog-fill" id="cal-bar" style="background:linear-gradient(90deg,var(--rose),var(--rose-deep));width:0%"></div>
-      </div>
+      <div class="prog-track"><div class="prog-fill" id="cal-bar" style="background:linear-gradient(90deg,var(--rose),var(--rose-deep));width:0%"></div></div>
       <div class="macro-row">
         <div class="macro-box"><div class="macro-val" id="cal-consumed">0</div><div class="macro-lbl">Consumed</div></div>
         <div class="macro-box"><div class="macro-val" id="cal-remain">1800</div><div class="macro-lbl">Remaining</div></div>
@@ -661,10 +334,7 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fdf0f4;">➕</div>
-        <div><div class="card-title">Log food</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#fdf0f4;">➕</div><div><div class="card-title">Log food</div></div></div>
       <div class="input-row">
         <input class="inp" id="food-name" placeholder="Food name">
         <input class="inp" id="food-kcal" type="number" placeholder="kcal" style="max-width:90px;">
@@ -672,10 +342,7 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fdf0f4;">📝</div>
-        <div><div class="card-title">Today's log</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#fdf0f4;">📝</div><div><div class="card-title">Today's log</div></div></div>
       <div id="food-log"></div>
     </div>
   </div>
@@ -683,19 +350,11 @@
   <!-- WATER -->
   <div class="section" id="sec-water">
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#e6f1fb;">💧</div>
-        <div>
-          <div class="card-title">Water intake</div>
-          <div class="card-subtitle">8 glasses = 2 litres. You've got this!</div>
-        </div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#e6f1fb;">💧</div><div><div class="card-title">Water intake</div><div class="card-subtitle">8 glasses = 2 litres!</div></div></div>
       <div class="drops-grid" id="drops"></div>
-      <div class="prog-track" style="margin-top:8px;">
-        <div class="prog-fill" id="water-bar" style="background:linear-gradient(90deg,var(--sky),var(--sky-deep));width:0%"></div>
-      </div>
+      <div class="prog-track" style="margin-top:8px;"><div class="prog-fill" id="water-bar" style="background:linear-gradient(90deg,var(--sky),var(--sky-deep));width:0%"></div></div>
       <div style="display:flex;justify-content:space-between;margin-top:8px;">
-        <span style="font-size:13px;color:var(--ink-muted);" id="water-count">0 / 8 glasses</span>
+        <span style="font-size:13px;color:var(--ink-muted);" id="water-count">0 / 8</span>
         <span style="font-size:13px;color:var(--sky-deep);font-weight:500;" id="water-msg"></span>
       </div>
     </div>
@@ -704,29 +363,23 @@
   <!-- MEALS -->
   <div class="section" id="sec-meals">
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#eaf3de;">🥗</div>
-        <div><div class="card-title">Today's meal plan</div><div class="card-subtitle">Plan your meals, feel your best</div></div>
-      </div>
-      <div class="meal-row"><div class="meal-emoji">🌅</div><div class="meal-tag">Breakfast</div><input class="meal-inp" id="m-0" placeholder="e.g. Oats with banana and honey" oninput="saveMeals()"></div>
-      <div class="meal-row"><div class="meal-emoji">🍎</div><div class="meal-tag">Mid-morning</div><input class="meal-inp" id="m-1" placeholder="e.g. Apple + handful of almonds" oninput="saveMeals()"></div>
-      <div class="meal-row"><div class="meal-emoji">☀️</div><div class="meal-tag">Lunch</div><input class="meal-inp" id="m-2" placeholder="e.g. Dal rice + sabzi + salad" oninput="saveMeals()"></div>
-      <div class="meal-row"><div class="meal-emoji">🍵</div><div class="meal-tag">Snack</div><input class="meal-inp" id="m-3" placeholder="e.g. Chai + roasted makhana" oninput="saveMeals()"></div>
-      <div class="meal-row"><div class="meal-emoji">🌙</div><div class="meal-tag">Dinner</div><input class="meal-inp" id="m-4" placeholder="e.g. 2 chapati + paneer bhurji" oninput="saveMeals()"></div>
+      <div class="card-head"><div class="card-icon" style="background:#eaf3de;">🥗</div><div><div class="card-title">Today's meal plan</div></div></div>
+      <div class="meal-row"><div class="meal-emoji">🌅</div><div class="meal-tag">Breakfast</div><input class="meal-inp" id="m-0" placeholder="e.g. Oats with banana" oninput="saveMeals()"></div>
+      <div class="meal-row"><div class="meal-emoji">🍎</div><div class="meal-tag">Mid-morning</div><input class="meal-inp" id="m-1" placeholder="e.g. Apple + almonds" oninput="saveMeals()"></div>
+      <div class="meal-row"><div class="meal-emoji">☀️</div><div class="meal-tag">Lunch</div><input class="meal-inp" id="m-2" placeholder="e.g. Dal rice + sabzi" oninput="saveMeals()"></div>
+      <div class="meal-row"><div class="meal-emoji">🍵</div><div class="meal-tag">Snack</div><input class="meal-inp" id="m-3" placeholder="e.g. Chai + makhana" oninput="saveMeals()"></div>
+      <div class="meal-row"><div class="meal-emoji">🌙</div><div class="meal-tag">Dinner</div><input class="meal-inp" id="m-4" placeholder="e.g. Chapati + paneer" oninput="saveMeals()"></div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#eaf3de;">📅</div>
-        <div><div class="card-title">Weekly meal ideas</div><div class="card-subtitle">Healthy & balanced suggestions</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#eaf3de;">📅</div><div><div class="card-title">Weekly ideas</div></div></div>
       <div style="font-size:13px;color:var(--ink-soft);line-height:2.2;">
-        <div style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(180,100,140,0.08);"><span style="font-weight:500;min-width:28px;">Mon</span><span>Poha · Fruit salad · Dal khichdi · Palak paneer + roti</span></div>
-        <div style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(180,100,140,0.08);"><span style="font-weight:500;min-width:28px;">Tue</span><span>Idli sambar · Nuts · Rajma chawal · Stir-fry veg</span></div>
-        <div style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(180,100,140,0.08);"><span style="font-weight:500;min-width:28px;">Wed</span><span>Paratha + curd · Banana · Sprout bowl · Chole + rice</span></div>
-        <div style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(180,100,140,0.08);"><span style="font-weight:500;min-width:28px;">Thu</span><span>Upma · Apple · Aloo gobi + roti · Moong dal soup</span></div>
-        <div style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(180,100,140,0.08);"><span style="font-weight:500;min-width:28px;">Fri</span><span>Smoothie bowl · Granola bar · Veg biryani · Pasta</span></div>
-        <div style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(180,100,140,0.08);"><span style="font-weight:500;min-width:28px;">Sat</span><span>Dosa + sambar · Fruit bowl · Paneer wrap · Soup</span></div>
-        <div style="display:flex;gap:10px;padding:6px 0;"><span style="font-weight:500;min-width:28px;">Sun</span><span>Pancakes 🥞 · Treat day! · Chole bhature · Rest ✨</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Mon</span><span>Poha · Fruit salad · Dal khichdi · Palak paneer</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Tue</span><span>Idli sambar · Nuts · Rajma chawal · Stir-fry veg</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Wed</span><span>Paratha + curd · Banana · Sprout bowl · Chole</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Thu</span><span>Upma · Apple · Aloo gobi + roti · Moong dal</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Fri</span><span>Smoothie bowl · Granola · Veg biryani · Pasta</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Sat</span><span>Dosa + sambar · Fruit bowl · Paneer wrap · Soup</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;"><span style="font-weight:500;min-width:28px;">Sun</span><span>Pancakes 🥞 · Treat day! · Chole bhature ✨</span></div>
       </div>
     </div>
   </div>
@@ -734,10 +387,7 @@
   <!-- REMINDERS -->
   <div class="section" id="sec-reminders">
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fce8ef;">➕</div>
-        <div><div class="card-title">Add reminder</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">➕</div><div><div class="card-title">Add reminder</div></div></div>
       <div class="input-row" style="margin-bottom:8px;">
         <input class="inp" id="rem-text" placeholder="Reminder text...">
         <input class="inp" id="rem-time" type="time" style="max-width:120px;">
@@ -750,14 +400,11 @@
           <option value="#a98fd4">📚 Study</option>
           <option value="#c9922a">🌸 Self-care</option>
         </select>
-        <button class="btn btn-primary" onclick="addReminder()">Add reminder</button>
+        <button class="btn btn-primary" onclick="addReminder()">Add</button>
       </div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fce8ef;">⏰</div>
-        <div><div class="card-title">Your reminders</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">⏰</div><div><div class="card-title">Your reminders</div></div></div>
       <div id="rem-list"></div>
     </div>
   </div>
@@ -765,793 +412,847 @@
   <!-- SKINCARE -->
   <div class="section" id="sec-skincare">
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fbeaf0;">🌸</div>
-        <div>
-          <div class="card-title">Morning routine ☀️</div>
-          <div class="card-subtitle" id="skin-am-prog">0 / 0 steps done</div>
-        </div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#fbeaf0;">🌸</div><div><div class="card-title">Morning routine ☀️</div><div class="card-subtitle" id="skin-am-prog">0 / 0 steps done</div></div></div>
       <div id="skin-am-list"></div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#d9c6f066;">🌙</div>
-        <div>
-          <div class="card-title">Evening routine 🌙</div>
-          <div class="card-subtitle" id="skin-pm-prog">0 / 0 steps done</div>
-        </div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#d9c6f066;">🌙</div><div><div class="card-title">Evening routine 🌙</div><div class="card-subtitle" id="skin-pm-prog">0 / 0 steps done</div></div></div>
       <div id="skin-pm-list"></div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fbeaf0;">➕</div>
-        <div><div class="card-title">Add skincare step</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#fbeaf0;">➕</div><div><div class="card-title">Add step</div></div></div>
       <div class="input-row">
         <input class="inp" id="skin-step-name" placeholder="e.g. Hyaluronic acid serum">
-        <select class="inp" id="skin-step-time" style="max-width:120px;">
-          <option value="am">Morning</option>
-          <option value="pm">Evening</option>
-        </select>
+        <select class="inp" id="skin-step-time" style="max-width:120px;"><option value="am">Morning</option><option value="pm">Evening</option></select>
         <button class="btn btn-primary" onclick="addSkinStep()">Add</button>
       </div>
     </div>
+    <div class="with-love">♥ made with love by Harshit</div>
   </div>
 
-  <!-- CAT -->
+  <!-- CAT PREP -->
   <div class="section" id="sec-cat">
-    <div class="card" style="background:linear-gradient(135deg,rgba(217,198,240,0.4),rgba(184,232,212,0.3));">
-      <div class="card-head">
-        <div class="card-icon" style="background:#d9c6f0;">🎯</div>
-        <div>
-          <div class="card-title">Study streak</div>
-          <div class="card-subtitle" id="streak-sub">Keep your momentum going!</div>
-        </div>
-      </div>
+    <div class="card" style="background:linear-gradient(135deg,rgba(217,198,240,.4),rgba(184,232,212,.3));">
+      <div class="card-head"><div class="card-icon" style="background:#d9c6f0;">🎯</div><div><div class="card-title">Study streak</div><div class="card-subtitle" id="streak-sub">Keep going!</div></div></div>
       <div class="streak-row" id="streak-row"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
         <div class="macro-box"><div class="macro-val" id="streak-total">0</div><div class="macro-lbl">Total study days</div></div>
-        <div class="macro-box"><div class="macro-val" id="streak-longest">0</div><div class="macro-lbl">Longest streak (days)</div></div>
+        <div class="macro-box"><div class="macro-val" id="streak-longest">0</div><div class="macro-lbl">Longest streak</div></div>
       </div>
     </div>
-
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#d9c6f066;">📊</div>
-        <div>
-          <div class="card-title">Topic tracker</div>
-          <div class="card-subtitle">Tap status badge to cycle through stages</div>
-        </div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#d9c6f066;">📊</div><div><div class="card-title">Topic tracker</div><div class="card-subtitle">Tap status to cycle</div></div></div>
       <div id="cat-topic-list"></div>
     </div>
-
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#d9c6f066;">➕</div>
-        <div><div class="card-title">Add topic</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#d9c6f066;">➕</div><div><div class="card-title">Add topic</div></div></div>
       <div class="input-row">
         <input class="inp" id="cat-topic-inp" placeholder="e.g. Percentages, RC...">
-        <select class="inp" id="cat-section-sel" style="max-width:110px;">
-          <option>Quant</option><option>VARC</option><option>DILR</option>
-        </select>
+        <select class="inp" id="cat-section-sel" style="max-width:110px;"><option>Quant</option><option>VARC</option><option>DILR</option></select>
         <button class="btn btn-primary" onclick="addCatTopic()">Add</button>
       </div>
     </div>
-
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#eaf3de;">📓</div>
-        <div><div class="card-title">Daily study log</div><div class="card-subtitle">What did you cover today?</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#eaf3de;">📓</div><div><div class="card-title">Daily study log</div></div></div>
       <div class="input-row" style="margin-bottom:12px;">
-        <input class="inp" id="cat-log-inp" placeholder="e.g. Solved 20 RC questions, revised PnC...">
+        <input class="inp" id="cat-log-inp" placeholder="What did you cover today?">
         <button class="btn btn-primary" onclick="addStudyLog()">Log it</button>
       </div>
       <div id="cat-log-list"></div>
     </div>
+    <div class="with-love">♥ you're going to crack CAT, Tania — Harshit believes in you</div>
+  </div>
+
+  <!-- PERIOD CYCLE TRACKER -->
+  <div class="section" id="sec-period">
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">🌙</div><div><div class="card-title">Period cycle tracker</div><div class="card-subtitle">Log your last period start date</div></div></div>
+      <div class="input-row" style="margin-bottom:14px;">
+        <div style="flex:1;">
+          <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Last period started on</div>
+          <input class="inp" type="date" id="period-start-input" style="width:100%;">
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Cycle length (days)</div>
+          <input class="inp" type="number" id="cycle-len-input" value="28" min="21" max="40">
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Period duration</div>
+          <input class="inp" type="number" id="period-dur-input" value="5" min="2" max="10">
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;" onclick="saveCycle()">Save & Calculate</button>
+    </div>
+
+    <div class="card" id="cycle-result-card" style="display:none;">
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">🌸</div><div><div class="card-title">Where you are today</div><div class="card-subtitle" id="cycle-today-sub"></div></div></div>
+      <div class="cycle-ring-wrap">
+        <div class="cycle-ring">
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="68" fill="none" stroke="#f0e6f0" stroke-width="12"/>
+            <circle cx="80" cy="80" r="68" fill="none" id="cycle-arc" stroke="#e07a96" stroke-width="12" stroke-linecap="round" stroke-dasharray="427" stroke-dashoffset="427" transform="rotate(-90 80 80)" style="transition:stroke-dashoffset .8s ease,stroke .4s;"/>
+          </svg>
+          <div class="cycle-center">
+            <div class="cycle-day-num" id="cycle-day-num">-</div>
+            <div class="cycle-day-lbl">day of cycle</div>
+            <div class="cycle-phase-tag" id="cycle-phase-tag">-</div>
+          </div>
+        </div>
+      </div>
+      <div class="cycle-phase-cards" id="cycle-phase-cards"></div>
+      <div style="font-size:13px;color:var(--ink-soft);margin-top:8px;padding:10px;background:rgba(180,100,140,.05);border-radius:var(--radius-sm);">
+        <div style="margin-bottom:4px;">🗓 <strong>Next period:</strong> <span id="next-period-date">-</span></div>
+        <div style="margin-bottom:4px;">💚 <strong>Fertile window:</strong> <span id="fertile-window">-</span></div>
+        <div>📦 <strong>Ovulation day:</strong> <span id="ovulation-day">-</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">📝</div><div><div class="card-title">Cycle notes</div><div class="card-subtitle">Log symptoms, moods, anything</div></div></div>
+      <div class="input-row" style="margin-bottom:8px;">
+        <textarea class="inp" id="cycle-note-text" placeholder="How are you feeling today? Any symptoms?"></textarea>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-bottom:12px;" onclick="addCycleNote()">Add note</button>
+      <div id="cycle-notes-list"></div>
+    </div>
+    <div class="with-love">♥ made with love by Harshit — take care of yourself, Tania</div>
+  </div>
+
+  <!-- MESSAGES FROM HARSHIT -->
+  <div class="section" id="sec-messages">
+    <div class="card" style="background:linear-gradient(135deg,rgba(244,167,185,.15),rgba(217,198,240,.1));">
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">💌</div><div><div class="card-title">His texts & paragraphs</div><div class="card-subtitle">Save the long ones forever ♥</div></div></div>
+      <p style="font-size:12px;color:var(--ink-muted);margin-bottom:12px;">Paste Harshit's messages here and they'll always be safe with you.</p>
+      <textarea class="inp" id="msg-text-input" placeholder="Paste his message here..."></textarea>
+      <div class="input-row" style="margin-top:8px;">
+        <input class="inp" id="msg-date-input" type="date">
+        <input class="inp" id="msg-label-input" placeholder="Label (optional, e.g. 'our first fight makeup')" style="flex:2;">
+        <button class="btn btn-primary" onclick="addMessage()">Save</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">📖</div><div><div class="card-title">Saved messages</div><div class="card-subtitle" id="msg-count-lbl">0 messages saved</div></div></div>
+      <div id="msg-list"></div>
+    </div>
+  </div>
+
+  <!-- DATE PLANNER -->
+  <div class="section" id="sec-dates">
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#d9c6f0;">🌹</div><div><div class="card-title">Plan a date</div><div class="card-subtitle">Where are you two going? What's the outfit?</div></div></div>
+      <div class="input-row" style="margin-bottom:8px;">
+        <div style="flex:1;"><div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Date</div><input class="inp" type="date" id="dp-date"></div>
+        <div style="flex:2;"><div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Place / plan</div><input class="inp" id="dp-place" placeholder="e.g. Dinner at Farzi Cafe, Connaught Place"></div>
+      </div>
+      <div style="margin-bottom:8px;">
+        <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Outfit plan 👗</div>
+        <input class="inp" id="dp-outfit" placeholder="e.g. Black coord set + white sneakers + gold hoops">
+      </div>
+      <div style="margin-bottom:8px;">
+        <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Notes / vibe</div>
+        <textarea class="inp" id="dp-notes" placeholder="e.g. Movie first then dinner, make reservation!" style="min-height:60px;"></textarea>
+      </div>
+      <button class="btn btn-primary" style="width:100%;" onclick="addDatePlan()">Save date plan</button>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#d9c6f0;">📅</div><div><div class="card-title">Upcoming dates</div><div class="card-subtitle">Your plans with Harshit ♥</div></div></div>
+      <div id="date-plans-list"></div>
+    </div>
+    <div class="with-love">♥ every day with you is a date — Harshit</div>
+  </div>
+
+  <!-- GOSSIP STORER -->
+  <div class="section" id="sec-gossip">
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#faeeda;">🤫</div><div><div class="card-title">Gossip vault</div><div class="card-subtitle">Everything you need to tell him</div></div></div>
+      <p style="font-size:12px;color:var(--ink-muted);margin-bottom:12px;">Store all the tea ☕ so you don't forget a single detail when you talk to Harshit!</p>
+      <textarea class="inp" id="gossip-text" placeholder="Spill the tea... what happened?"></textarea>
+      <div class="input-row" style="margin-top:8px;">
+        <input class="inp" id="gossip-tag-inp" placeholder="Tag (e.g. college, family, friends)">
+        <button class="btn btn-primary" onclick="addGossip()">Store it 🤫</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#faeeda;">📦</div><div><div class="card-title">The vault</div><div class="card-subtitle" id="gossip-count-lbl">0 stories waiting to be told</div></div></div>
+      <div id="gossip-list"></div>
+    </div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="section" id="sec-calendar">
+    <div class="card">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calPrev()">‹</button>
+        <div class="cal-month-lbl" id="cal-month-lbl"></div>
+        <button class="cal-nav-btn" onclick="calNext()">›</button>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="cal-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--rose-deep);"></div>Special date</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#fce8ef;border:1px solid var(--rose-deep);"></div>Important day</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--rose-deep);border:2px solid var(--rose-deep);"></div>Period day</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mint-deep);"></div>Fertile</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">❤️</div><div><div class="card-title">Special dates</div><div class="card-subtitle">Highlighted in deep pink on calendar</div></div></div>
+      <div id="special-events-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">➕</div><div><div class="card-title">Add important date</div></div></div>
+      <div class="input-row" style="margin-bottom:8px;">
+        <input class="inp" type="date" id="sp-date-inp">
+        <input class="inp" id="sp-name-inp" placeholder="e.g. First date anniversary">
+      </div>
+      <div class="input-row">
+        <select class="inp" id="sp-type-inp">
+          <option value="deep">💗 Special (deep pink)</option>
+          <option value="light">🌸 Important (light pink)</option>
+        </select>
+        <button class="btn btn-primary" onclick="addSpecialDate()">Add</button>
+      </div>
+    </div>
+    <div class="with-love">♥ every date matters — Harshit</div>
   </div>
 
   <!-- BIRTHDAY -->
   <div class="section" id="sec-birthday">
-
-    <div class="bday-hero" id="bday-hero">
-      <div id="bday-dynamic-content"><!-- filled by JS --></div>
-    </div>
-
+    <div class="bday-hero" id="bday-hero"><div id="bday-dynamic-content"></div></div>
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fce8ef;">🕯️</div>
-        <div><div class="card-title">Blow out the candles!</div><div class="card-subtitle">Tap each flame or blow them all at once</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#fce8ef;">🕯️</div><div><div class="card-title">Blow out the candles!</div><div class="card-subtitle">Tap each flame or blow all at once</div></div></div>
       <div class="bday-candles" id="candles-row"></div>
       <button class="blow-btn" onclick="blowAllCandles()">💨 Blow them all!</button>
       <p id="candle-msg" style="text-align:center;font-size:13px;color:var(--ink-muted);margin-top:12px;"></p>
     </div>
-
     <div class="bday-wishes">
-      <div class="card-head" style="margin-bottom:14px;">
-        <div class="card-icon" style="background:#fce8ef;">💌</div>
-        <div><div class="card-title">A note from me to you</div></div>
-      </div>
+      <div class="card-head" style="margin-bottom:14px;"><div class="card-icon" style="background:#fce8ef;">💌</div><div><div class="card-title">A note from Harshit 💌</div></div></div>
       <div class="wish-item"><span class="wish-emoji">🌸</span>Happy birthday Tania! Today the whole world is a little brighter because you're in it.</div>
       <div class="wish-item"><span class="wish-emoji">💪</span>You are studying so hard for CAT and I am beyond proud of everything you are becoming.</div>
       <div class="wish-item"><span class="wish-emoji">✨</span>You take care of yourself, you work on your goals, and you still make time to be the most amazing person I know.</div>
       <div class="wish-item"><span class="wish-emoji">🎯</span>This year is your year. CAT, growth, health, happiness — all of it is coming your way.</div>
-      <div class="wish-item"><span class="wish-emoji">🥰</span>I made you this little app so every single day feels a little more organised and a little more loved. Because you deserve that every day, not just your birthday.</div>
-      <div class="wish-item"><span class="wish-emoji">🎂</span>Here's to you, Tania. My favourite person. Happy birthday. ❤️</div>
+      <div class="wish-item"><span class="wish-emoji">🥰</span>I made you this little app so every single day feels a little more organised and a little more loved. Because you deserve that every day.</div>
+      <div class="wish-item"><span class="wish-emoji">🎂</span>Here's to you, Tania. My favourite person. Happy birthday. ❤️ — Harshit</div>
     </div>
-
     <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fdf0f4;">🎁</div>
-        <div><div class="card-title">Birthday year bucket list</div><div class="card-subtitle">Things to do this year</div></div>
-      </div>
+      <div class="card-head"><div class="card-icon" style="background:#fdf0f4;">🎁</div><div><div class="card-title">Birthday year bucket list</div></div></div>
       <div id="bday-bucket-list"></div>
       <div class="input-row" style="margin-top:10px;">
-        <input class="inp" id="bucket-inp" placeholder="Add a dream or goal for this year...">
+        <input class="inp" id="bucket-inp" placeholder="Add a dream for this year...">
         <button class="btn btn-primary" onclick="addBucketItem()">Add</button>
       </div>
     </div>
-
-  </div>
-<!-- CYCLE -->
-<div class="section" id="sec-cycle">
-  <div class="card">
-    <div class="card-head">
-      <div class="card-icon" style="background:#fce8ef;">🌸</div>
-      <div>
-        <div class="card-title">Cycle Tracker</div>
-        <div class="card-subtitle">Take care of yourself 💗</div>
-      </div>
-    </div>
-
-    <input type="date" id="cycle-date" class="inp">
-    <input type="number" id="cycle-length" class="inp" value="28">
-
-    <button class="btn btn-primary" onclick="saveCycle()">Save</button>
-
-    <div class="macro-box" style="margin-top:12px;">
-      <div class="macro-val" id="next-period">--</div>
-      <div class="macro-lbl">Next expected</div>
-    </div>
-  </div>
-</div>
-
-<div class="section" id="sec-letters">
-  <div class="card">
-    <div class="card-head">
-      <div class="card-icon" style="background:#fce8ef;">💌</div>
-      <div>
-        <div class="card-title">Letters from you</div>
-      </div>
-    </div>
-
-    <textarea id="letter-input" class="inp" placeholder="Write something..." style="min-height:100px;"></textarea>
-
-    <button class="btn btn-primary" style="margin-top:10px;" onclick="addLetter()">Save</button>
   </div>
 
-  <div class="card">
-    <div id="letters-list"></div>
-  </div>
-</div>
+  <div class="footer-love">made with ♥ by <span>Harshit</span>, just for Tania 🌸</div>
 
 </div><!-- /wrap -->
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ============ STATE ============
-const KEY = 'mylove_v3';
-const QUOTES = [
-  { text: "You are braver than you believe, stronger than you seem, and smarter than you think.", attr: "— A.A. Milne" },
-  { text: "With the new day comes new strength and new thoughts.", attr: "— Eleanor Roosevelt" },
-  { text: "She believed she could, so she did.", attr: "— R.S. Grey" },
-  { text: "Your present circumstances don't determine where you can go; they merely determine where you start.", attr: "— Nido Qubein" },
-  { text: "Every accomplishment starts with the decision to try.", attr: "— John F. Kennedy" },
-  { text: "You have been assigned this mountain to show others it can be moved.", attr: "— Mel Robbins" },
-  { text: "Be a girl with a mind, a woman with attitude, and a lady with class.", attr: "" },
-  { text: "CAT is not a destination, it is a journey of self-discovery.", attr: "— Unknown" },
-  { text: "The secret of getting ahead is getting started.", attr: "— Mark Twain" },
-  { text: "Take care of your body. It's the only place you have to live.", attr: "— Jim Rohn" }
+const KEY='taniality_v1';
+const QUOTES=[
+  {text:"You are braver than you believe, stronger than you seem, and smarter than you think.",attr:"— A.A. Milne"},
+  {text:"With the new day comes new strength and new thoughts.",attr:"— Eleanor Roosevelt"},
+  {text:"She believed she could, so she did.",attr:"— R.S. Grey"},
+  {text:"Your present circumstances don't determine where you can go; they merely determine where you start.",attr:"— Nido Qubein"},
+  {text:"Every accomplishment starts with the decision to try.",attr:"— John F. Kennedy"},
+  {text:"You have been assigned this mountain to show others it can be moved.",attr:"— Mel Robbins"},
+  {text:"Be a girl with a mind, a woman with attitude, and a lady with class.",attr:""},
+  {text:"The secret of getting ahead is getting started.",attr:"— Mark Twain"},
+  {text:"Take care of your body. It's the only place you have to live.",attr:"— Jim Rohn"},
+  {text:"She is clothed in strength and dignity, and she laughs without fear of the future.",attr:"— Proverbs 31:25"}
 ];
 
-function defaultState() {
+function today(){return new Date().toDateString();}
+function todayISO(){const d=new Date();return d.toISOString().split('T')[0];}
+function getWeekKey(){const d=new Date();const jan1=new Date(d.getFullYear(),0,1);const week=Math.ceil(((d-jan1)/86400000+jan1.getDay()+1)/7);return d.getFullYear()+'-W'+week;}
+function computeLongest(days){let best=0,cur=0;for(const v of days){if(v){cur++;best=Math.max(best,cur);}else cur=0;}return best;}
+function fmtDate(iso){if(!iso)return '';const[y,m,d]=iso.split('-');const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;}
+
+function defaultState(){
   return {
-    date: today(),
-    foods: [],
-    calGoal: 1800,
-    water: 0,
-    meals: { 0:'',1:'',2:'',3:'',4:'' },
-    reminders: [
-      { text:'Order / take Cetirizine', time:'09:00', color:'#e07a96', done:false },
-      { text:'Drink water', time:'12:00', color:'#3d88d4', done:false },
-      { text:'Evening CAT practice session', time:'19:00', color:'#a98fd4', done:false },
-      { text:'Night skincare routine', time:'21:30', color:'#c9922a', done:false }
+    date:today(),
+    foods:[],calGoal:1800,water:0,
+    meals:{0:'',1:'',2:'',3:'',4:''},
+    reminders:[
+      {text:'Order / take Cetirizine',time:'09:00',color:'#e07a96',done:false},
+      {text:'Drink water',time:'12:00',color:'#3d88d4',done:false},
+      {text:'Evening CAT practice',time:'19:00',color:'#a98fd4',done:false},
+      {text:'Night skincare routine',time:'21:30',color:'#c9922a',done:false}
     ],
-    skinAM: ['Cleanser','Toner','Vitamin C serum','Moisturizer','Sunscreen (SPF 50+)'],
-    skinPM: ['Oil cleanser / micellar water','Gentle face wash','Niacinamide / Retinol serum','Night cream / sleeping mask'],
-    skinChecked: {},
-    catTopics: [
-      { name:'Percentages', section:'Quant', status:'done' },
-      { name:'Profit & Loss', section:'Quant', status:'wip' },
-      { name:'Time, Speed & Distance', section:'Quant', status:'todo' },
-      { name:'Reading Comprehension', section:'VARC', status:'wip' },
-      { name:'Parajumbles', section:'VARC', status:'todo' },
-      { name:'Data Interpretation', section:'DILR', status:'todo' },
-      { name:'Logical Reasoning', section:'DILR', status:'wip' }
+    skinAM:['Cleanser','Toner','Vitamin C serum','Moisturizer','Sunscreen (SPF 50+)'],
+    skinPM:['Oil cleanser','Gentle face wash','Niacinamide / Retinol serum','Night cream'],
+    skinChecked:{},
+    catTopics:[
+      {name:'Percentages',section:'Quant',status:'done'},
+      {name:'Profit & Loss',section:'Quant',status:'wip'},
+      {name:'Time, Speed & Distance',section:'Quant',status:'todo'},
+      {name:'Reading Comprehension',section:'VARC',status:'wip'},
+      {name:'Parajumbles',section:'VARC',status:'todo'},
+      {name:'Data Interpretation',section:'DILR',status:'todo'},
+      {name:'Logical Reasoning',section:'DILR',status:'wip'}
     ],
-    streak: { week: getWeekKey(), days: [0,0,0,0,0,0,0] },
-    longestStreak: 0,
-    totalStudyDays: 0,
-    studyLogs: [],
-    candlesBlown: [],
-    bucketList: [
-      'Crack CAT 🎯',
-      'Try a new cuisine 🍜',
-      'Take a solo trip somewhere 🌏',
-      'Read 5 books 📚',
-      'Learn something completely new 🌱'
+    streak:{week:getWeekKey(),days:[0,0,0,0,0,0,0]},
+    longestStreak:0,totalStudyDays:0,studyLogs:[],
+    candlesBlown:[],
+    bucketList:['Crack CAT 🎯','Try a new cuisine 🍜','Take a solo trip 🌏','Read 5 books 📚','Learn something new 🌱'],
+    // NEW
+    periodStart:'',cycleLen:28,periodDur:5,cycleNotes:[],
+    messages:[],
+    datePlans:[],
+    gossip:[],
+    specialDates:[
+      {date:'2025-10-13',name:'Our anniversary 💕',type:'deep'},
+      {date:'2026-04-12',name:"Tania's birthday 🎂",type:'deep'}
     ]
   };
 }
 
-function today() { return new Date().toDateString(); }
-
-function getWeekKey() {
-  const d = new Date();
-  const jan1 = new Date(d.getFullYear(), 0, 1);
-  const week = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
-  return d.getFullYear() + '-W' + week;
-}
-
-function computeLongest(days) {
-  let best = 0, cur = 0;
-  for (const v of days) { if (v) { cur++; best = Math.max(best, cur); } else cur = 0; }
-  return best;
-}
-
-let S = (() => {
-  try {
-    const raw = localStorage.getItem(KEY);
-    if (!raw) return defaultState();
-    let d = JSON.parse(raw);
-
-    // Migrate old streak format (plain array) to new object format
-    if (Array.isArray(d.streak)) {
-      d.streak = { week: getWeekKey(), days: d.streak };
-      d.longestStreak = computeLongest(d.streak.days);
-      d.totalStudyDays = d.streak.days.filter(Boolean).length;
+let S=(()=>{
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(!raw)return defaultState();
+    let d=JSON.parse(raw);
+    if(Array.isArray(d.streak))d.streak={week:getWeekKey(),days:d.streak};
+    if(!d.streak||d.streak.week!==getWeekKey()){
+      const prev=d.streak&&d.streak.days||[0,0,0,0,0,0,0];
+      d.longestStreak=Math.max(d.longestStreak||0,computeLongest(prev));
+      d.streak={week:getWeekKey(),days:[0,0,0,0,0,0,0]};
     }
-
-    // New week — reset days, update records
-    if (!d.streak || d.streak.week !== getWeekKey()) {
-      const prevDays = (d.streak && d.streak.days) || [0,0,0,0,0,0,0];
-      d.longestStreak = Math.max(d.longestStreak || 0, computeLongest(prevDays));
-      d.streak = { week: getWeekKey(), days: [0,0,0,0,0,0,0] };
+    if(d.date!==today()){
+      d.date=today();d.foods=[];d.water=0;d.skinChecked={};
+      d.reminders=(d.reminders||[]).map(r=>({...r,done:false}));
     }
-
-    // New day — reset daily trackers
-    if (d.date !== today()) {
-      d.date = today();
-      d.foods = [];
-      d.water = 0;
-      d.skinChecked = {};
-      d.reminders = (d.reminders || []).map(r => ({...r, done: false}));
-    }
-
-    return { ...defaultState(), ...d };
-  } catch(e) { return defaultState(); }
+    return {...defaultState(),...d};
+  }catch(e){return defaultState();}
 })();
 
-function save() {
-  S.calGoal = parseInt(document.getElementById('cal-goal').value) || 1800;
-  localStorage.setItem(KEY, JSON.stringify(S));
+function save(){
+  S.calGoal=parseInt(document.getElementById('cal-goal').value)||1800;
+  localStorage.setItem(KEY,JSON.stringify(S));
   updateOverview();
 }
 
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
 }
 
-// ============ TABS ============
-function goTab(name, el) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('sec-' + name).classList.add('active');
+function goTab(name,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
   el.classList.add('active');
+  if(name==='calendar')renderCalendar();
+  if(name==='period')renderCycleResult();
 }
 
-// ============ HEADER ============
-function renderHeader() {
-  const d = new Date();
-  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
-  document.getElementById('hdate').textContent = d.toLocaleDateString('en-IN', opts);
-  const q = QUOTES[d.getDate() % QUOTES.length];
-  document.getElementById('daily-quote').textContent = q.text;
-  document.getElementById('quote-attr').textContent = q.attr;
+// HEADER
+function renderHeader(){
+  const d=new Date();
+  document.getElementById('hdate').textContent=d.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const q=QUOTES[d.getDate()%QUOTES.length];
+  document.getElementById('daily-quote').textContent=q.text;
+  document.getElementById('quote-attr').textContent=q.attr;
 }
 
-// ============ OVERVIEW ============
-function updateOverview() {
-  const total = S.foods.reduce((a,f) => a+f.cal, 0);
-  document.getElementById('ov-cal').textContent = total;
-  document.getElementById('ov-water').textContent = S.water + '/8';
-  const skinAll = [...S.skinAM, ...S.skinPM].length;
-  const skinDone = Object.values(S.skinChecked).filter(Boolean).length;
-  document.getElementById('ov-skin').textContent = skinAll ? Math.round(skinDone/skinAll*100) + '%' : '0%';
-  const catDone = S.catTopics.filter(t => t.status === 'done').length;
-  document.getElementById('ov-cat').textContent = S.catTopics.length ? Math.round(catDone/S.catTopics.length*100) + '%' : '0%';
-
-  // Home summary
-  const pending = S.reminders.filter(r => !r.done);
-  const skinLeft = skinAll - skinDone;
-  const catLeft = S.catTopics.filter(t => t.status !== 'done').length;
-  let html = '';
-  if (!pending.length && !skinLeft && !catLeft) {
-    html = '<p style="font-size:14px;color:var(--mint-deep);font-weight:500;">🎉 All done for today! You crushed it!</p>';
-  } else {
-    if (pending.length) html += `<div class="log-entry"><div class="log-dot" style="background:var(--rose-deep)"></div><div class="log-text">${pending.length} reminder${pending.length>1?'s':''} pending</div></div>`;
-    if (skinLeft) html += `<div class="log-entry"><div class="log-dot" style="background:var(--lav-deep)"></div><div class="log-text">${skinLeft} skincare step${skinLeft>1?'s':''} remaining</div></div>`;
-    if (catLeft) html += `<div class="log-entry"><div class="log-dot" style="background:var(--mint-deep)"></div><div class="log-text">${catLeft} CAT topic${catLeft>1?'s':''} not yet done</div></div>`;
-    if (S.water < 8) html += `<div class="log-entry"><div class="log-dot" style="background:var(--sky-deep)"></div><div class="log-text">${8-S.water} more glass${8-S.water>1?'es':''} of water to go</div></div>`;
+// OVERVIEW
+function updateOverview(){
+  const total=S.foods.reduce((a,f)=>a+f.cal,0);
+  document.getElementById('ov-cal').textContent=total;
+  document.getElementById('ov-water').textContent=S.water+'/8';
+  const skinAll=[...S.skinAM,...S.skinPM].length;
+  const skinDone=Object.values(S.skinChecked).filter(Boolean).length;
+  document.getElementById('ov-skin').textContent=skinAll?Math.round(skinDone/skinAll*100)+'%':'0%';
+  const catDone=S.catTopics.filter(t=>t.status==='done').length;
+  document.getElementById('ov-cat').textContent=S.catTopics.length?Math.round(catDone/S.catTopics.length*100)+'%':'0%';
+  const pending=S.reminders.filter(r=>!r.done);
+  const skinLeft=skinAll-skinDone;
+  const catLeft=S.catTopics.filter(t=>t.status!=='done').length;
+  let html='';
+  if(!pending.length&&!skinLeft&&!catLeft&&S.water>=8){html='<p style="font-size:14px;color:var(--mint-deep);font-weight:500;">🎉 All done for today! You crushed it!</p>';}
+  else{
+    if(pending.length)html+=`<div class="log-entry"><div class="log-dot" style="background:var(--rose-deep)"></div><div class="log-text">${pending.length} reminder${pending.length>1?'s':''} pending</div></div>`;
+    if(skinLeft)html+=`<div class="log-entry"><div class="log-dot" style="background:var(--lav-deep)"></div><div class="log-text">${skinLeft} skincare step${skinLeft>1?'s':''} remaining</div></div>`;
+    if(catLeft)html+=`<div class="log-entry"><div class="log-dot" style="background:var(--mint-deep)"></div><div class="log-text">${catLeft} CAT topic${catLeft>1?'s':''} not yet done</div></div>`;
+    if(S.water<8)html+=`<div class="log-entry"><div class="log-dot" style="background:var(--sky-deep)"></div><div class="log-text">${8-S.water} more glass${8-S.water>1?'es':''} of water to go</div></div>`;
   }
-  document.getElementById('home-summary').innerHTML = html || '<p style="font-size:14px;color:var(--ink-muted);">Loading...</p>';
-
-  // Med banner
-  const meds = S.reminders.filter(r => !r.done && r.color === '#e07a96');
-  document.getElementById('med-status').textContent = meds.length
-    ? meds.map(m => m.text + ' at ' + m.time).join(' · ')
-    : '✅ All medicines taken / ordered today!';
+  document.getElementById('home-summary').innerHTML=html;
+  const meds=S.reminders.filter(r=>!r.done&&r.color==='#e07a96');
+  document.getElementById('med-status').textContent=meds.length?meds.map(m=>m.text+' at '+m.time).join(' · '):'✅ All medicines taken / ordered!';
+  // Cycle on home
+  if(S.periodStart){
+    const info=getCycleInfo();
+    document.getElementById('home-cycle-sub').textContent=`Day ${info.dayOfCycle} — ${info.phaseName}`;
+    document.getElementById('home-cycle-info').textContent=info.phaseAdvice;
+  }
 }
 
-// ============ CALORIES ============
-function renderCalories() {
-  const goal = parseInt(document.getElementById('cal-goal').value) || 1800;
-  const total = S.foods.reduce((a,f) => a+f.cal, 0);
-  const pct = Math.min(100, Math.round(total/goal*100));
-  document.getElementById('cal-bar').style.width = pct + '%';
-  document.getElementById('cal-consumed').textContent = total;
-  document.getElementById('cal-remain').textContent = Math.max(0, goal-total);
-  document.getElementById('cal-pct').textContent = pct + '%';
-  document.getElementById('cal-subtitle').textContent = `${total} of ${goal} kcal consumed`;
-
-  const el = document.getElementById('food-log');
-  if (!S.foods.length) { el.innerHTML = '<p style="font-size:13px;color:var(--ink-muted);">Nothing logged yet. Add your first meal!</p>'; return; }
-  el.innerHTML = S.foods.map((f,i) =>
-    `<div class="food-item"><div class="food-dot"></div><span class="food-name">${f.name}</span><span class="food-cal-badge">${f.cal} kcal</span><button class="food-del" onclick="removeFood(${i})">×</button></div>`
-  ).join('');
+// CALORIES
+function renderCalories(){
+  const goal=parseInt(document.getElementById('cal-goal').value)||1800;
+  const total=S.foods.reduce((a,f)=>a+f.cal,0);
+  const pct=Math.min(100,Math.round(total/goal*100));
+  document.getElementById('cal-bar').style.width=pct+'%';
+  document.getElementById('cal-consumed').textContent=total;
+  document.getElementById('cal-remain').textContent=Math.max(0,goal-total);
+  document.getElementById('cal-pct').textContent=pct+'%';
+  document.getElementById('cal-subtitle').textContent=`${total} of ${goal} kcal consumed`;
+  const el=document.getElementById('food-log');
+  if(!S.foods.length){el.innerHTML='<p style="font-size:13px;color:var(--ink-muted);">Nothing logged yet!</p>';return;}
+  el.innerHTML=S.foods.map((f,i)=>`<div class="food-item"><div class="food-dot"></div><span class="food-name">${f.name}</span><span class="food-cal-badge">${f.cal} kcal</span><button class="food-del" onclick="removeFood(${i})">×</button></div>`).join('');
   updateOverview();
 }
-
-function addFood() {
-  const n = document.getElementById('food-name').value.trim();
-  const c = parseInt(document.getElementById('food-kcal').value);
-  if (!n || !c) { toast('Please enter food name and calories'); return; }
-  S.foods.push({ name:n, cal:c });
-  document.getElementById('food-name').value = '';
-  document.getElementById('food-kcal').value = '';
-  save(); renderCalories();
-  toast('Food logged! 🍽');
+function addFood(){
+  const n=document.getElementById('food-name').value.trim();
+  const c=parseInt(document.getElementById('food-kcal').value);
+  if(!n||!c){toast('Enter food name and calories');return;}
+  S.foods.push({name:n,cal:c});
+  document.getElementById('food-name').value='';document.getElementById('food-kcal').value='';
+  save();renderCalories();toast('Food logged! 🍽');
 }
+function removeFood(i){S.foods.splice(i,1);save();renderCalories();}
 
-function removeFood(i) { S.foods.splice(i,1); save(); renderCalories(); }
-
-// ============ WATER ============
-function renderWater() {
-  const el = document.getElementById('drops');
-  el.innerHTML = '';
-  for (let i = 0; i < 8; i++) {
-    const d = document.createElement('button');
-    d.className = 'drop-btn' + (i < S.water ? ' filled' : '');
-    d.setAttribute('aria-label', 'Glass ' + (i+1));
-    d.onclick = () => {
-      S.water = i < S.water ? i : i+1;
-      save(); renderWater();
-      if (S.water === 8) toast('🎉 Hydration goal reached! Amazing!');
-      else toast('💧 Glass ' + S.water + ' logged!');
-    };
+// WATER
+function renderWater(){
+  const el=document.getElementById('drops');el.innerHTML='';
+  for(let i=0;i<8;i++){
+    const d=document.createElement('button');
+    d.className='drop-btn'+(i<S.water?' filled':'');
+    d.onclick=()=>{S.water=i<S.water?i:i+1;save();renderWater();if(S.water===8)toast('🎉 Hydration goal reached!');else toast('💧 Glass '+S.water+' logged!');};
     el.appendChild(d);
   }
-  const pct = Math.round(S.water/8*100);
-  document.getElementById('water-bar').style.width = pct + '%';
-  document.getElementById('water-count').textContent = S.water + ' / 8 glasses (' + S.water*250 + 'ml)';
-  const msgs = ['', 'Great start! 🌱', 'Keep it going! 💪', 'Halfway to halfway!', 'Halfway there! 🌊', 'More than half!', 'Almost there! ✨', 'One more glass! 🌟', '🎉 Goal reached! Proud of you!'];
-  document.getElementById('water-msg').textContent = msgs[S.water] || '';
+  document.getElementById('water-bar').style.width=Math.round(S.water/8*100)+'%';
+  document.getElementById('water-count').textContent=S.water+' / 8 glasses ('+S.water*250+'ml)';
+  const msgs=['','Great start! 🌱','Keep going! 💪','Halfway to halfway!','Halfway there! 🌊','More than half!','Almost there! ✨','One more! 🌟','🎉 Goal reached!'];
+  document.getElementById('water-msg').textContent=msgs[S.water]||'';
 }
 
-// ============ MEALS ============
-function renderMeals() {
-  for (let i = 0; i < 5; i++) {
-    const el = document.getElementById('m-'+i);
-    if (el) el.value = S.meals[i] || '';
-  }
-}
-function saveMeals() {
-  for (let i = 0; i < 5; i++) {
-    const el = document.getElementById('m-'+i);
-    if (el) S.meals[i] = el.value;
-  }
-  save();
-}
+// MEALS
+function renderMeals(){for(let i=0;i<5;i++){const el=document.getElementById('m-'+i);if(el)el.value=S.meals[i]||'';}}
+function saveMeals(){for(let i=0;i<5;i++){const el=document.getElementById('m-'+i);if(el)S.meals[i]=el.value;}save();}
 
-// ============ REMINDERS ============
-function renderReminders() {
-  const el = document.getElementById('rem-list');
-  if (!S.reminders.length) { el.innerHTML = '<p style="font-size:13px;color:var(--ink-muted);">No reminders yet. Add one above!</p>'; return; }
-  el.innerHTML = S.reminders.map((r,i) =>
-    `<div class="rem-item ${r.done?'done':''}">
-      <div class="rem-color-dot" style="background:${r.color}"></div>
-      <span class="rem-text">${r.text}</span>
-      <span class="rem-time">${r.time}</span>
-      <div class="rem-check ${r.done?'done':''}" onclick="toggleReminder(${i})">${r.done?'✓':''}</div>
-    </div>`
-  ).join('');
+// REMINDERS
+function renderReminders(){
+  const el=document.getElementById('rem-list');
+  if(!S.reminders.length){el.innerHTML='<p style="font-size:13px;color:var(--ink-muted);">No reminders yet!</p>';return;}
+  el.innerHTML=S.reminders.map((r,i)=>`<div class="rem-item ${r.done?'done':''}"><div class="rem-color-dot" style="background:${r.color}"></div><span class="rem-text">${r.text}</span><span class="rem-time">${r.time}</span><div class="rem-check ${r.done?'done':''}" onclick="toggleReminder(${i})">${r.done?'✓':''}</div></div>`).join('');
   updateOverview();
 }
-
-function addReminder() {
-  const t = document.getElementById('rem-text').value.trim();
-  const ti = document.getElementById('rem-time').value || '00:00';
-  const c = document.getElementById('rem-cat').value;
-  if (!t) { toast('Please enter reminder text'); return; }
-  S.reminders.push({ text:t, time:ti, color:c, done:false });
-  document.getElementById('rem-text').value = '';
-  save(); renderReminders();
-  toast('Reminder added! ⏰');
+function addReminder(){
+  const t=document.getElementById('rem-text').value.trim();
+  const ti=document.getElementById('rem-time').value||'00:00';
+  const c=document.getElementById('rem-cat').value;
+  if(!t){toast('Enter reminder text');return;}
+  S.reminders.push({text:t,time:ti,color:c,done:false});
+  document.getElementById('rem-text').value='';
+  save();renderReminders();toast('Reminder added! ⏰');
 }
+function toggleReminder(i){S.reminders[i].done=!S.reminders[i].done;save();renderReminders();if(S.reminders[i].done)toast('✅ Done!');}
 
-function toggleReminder(i) {
-  S.reminders[i].done = !S.reminders[i].done;
-  save(); renderReminders();
-  if (S.reminders[i].done) toast('✅ Done! Keep going!');
-}
-
-// ============ SKINCARE ============
-function renderSkincare() {
-  function list(steps, prefix, listId, progId) {
-    const done = steps.filter((_,i) => S.skinChecked[prefix+i]).length;
-    document.getElementById(progId).textContent = done + ' / ' + steps.length + ' steps done';
-    document.getElementById(listId).innerHTML = steps.map((s,i) => {
-      const k = prefix+i, chk = !!S.skinChecked[k];
-      const bg = prefix==='am' ? '#fbeaf0' : '#ede0f7';
-      const col = prefix==='am' ? '#c0386a' : '#6b35b0';
-      return `<div class="skin-step ${chk?'done':''}" onclick="toggleSkin('${k}')">
-        <div class="skin-num" style="background:${bg};color:${col};">${i+1}</div>
-        <span class="skin-name">${s}</span>
-        <span class="skin-check-icon">${chk?'✅':'○'}</span>
-      </div>`;
+// SKINCARE
+function renderSkincare(){
+  function list(steps,prefix,listId,progId){
+    const done=steps.filter((_,i)=>S.skinChecked[prefix+i]).length;
+    document.getElementById(progId).textContent=done+' / '+steps.length+' steps done';
+    document.getElementById(listId).innerHTML=steps.map((s,i)=>{
+      const k=prefix+i,chk=!!S.skinChecked[k];
+      const bg=prefix==='am'?'#fbeaf0':'#ede0f7';
+      const col=prefix==='am'?'#c0386a':'#6b35b0';
+      return `<div class="skin-step ${chk?'done':''}" onclick="toggleSkin('${k}')"><div class="skin-num" style="background:${bg};color:${col};">${i+1}</div><span class="skin-name">${s}</span><span class="skin-check-icon">${chk?'✅':'○'}</span></div>`;
     }).join('');
   }
-  list(S.skinAM, 'am', 'skin-am-list', 'skin-am-prog');
-  list(S.skinPM, 'pm', 'skin-pm-list', 'skin-pm-prog');
+  list(S.skinAM,'am','skin-am-list','skin-am-prog');
+  list(S.skinPM,'pm','skin-pm-list','skin-pm-prog');
   updateOverview();
 }
-
-function toggleSkin(k) { S.skinChecked[k] = !S.skinChecked[k]; save(); renderSkincare(); if(S.skinChecked[k]) toast('✨ Step done!'); }
-
-function addSkinStep() {
-  const n = document.getElementById('skin-step-name').value.trim();
-  const t = document.getElementById('skin-step-time').value;
-  if (!n) return;
-  if (t==='am') S.skinAM.push(n); else S.skinPM.push(n);
-  document.getElementById('skin-step-name').value = '';
-  save(); renderSkincare();
-  toast('Skincare step added! 🌸');
+function toggleSkin(k){S.skinChecked[k]=!S.skinChecked[k];save();renderSkincare();if(S.skinChecked[k])toast('✨ Step done!');}
+function addSkinStep(){
+  const n=document.getElementById('skin-step-name').value.trim();
+  const t=document.getElementById('skin-step-time').value;
+  if(!n)return;
+  if(t==='am')S.skinAM.push(n);else S.skinPM.push(n);
+  document.getElementById('skin-step-name').value='';
+  save();renderSkincare();toast('Step added! 🌸');
 }
 
-// ============ CAT ============
-function renderCat() {
-  // Streak — this week's days
-  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  const weekDays = S.streak.days || [0,0,0,0,0,0,0];
-  document.getElementById('streak-row').innerHTML = days.map((d,i) =>
-    `<div class="streak-cell ${weekDays[i]?'done':''}"><span>${d}</span><div class="sc-dot"></div></div>`
-  ).join('');
-  const thisWeek = weekDays.filter(Boolean).length;
-  document.getElementById('streak-sub').textContent =
-    thisWeek + ' day' + (thisWeek!==1?'s':'') + ' this week' +
-    (thisWeek>=5?' 🔥 On fire!':thisWeek>=3?' 💪 Good going!':' — keep it up!');
-
-  // All-time stats
-  const currentLongest = Math.max(S.longestStreak || 0, computeLongest(weekDays));
-  document.getElementById('streak-total').textContent = S.totalStudyDays || 0;
-  document.getElementById('streak-longest').textContent = currentLongest;
-
-  // Topics
-  document.getElementById('cat-topic-list').innerHTML = S.catTopics.length
-    ? S.catTopics.map((t,i) =>
-        `<div class="cat-topic-item">
-          <span class="cat-section-badge badge-${t.section.toLowerCase()}">${t.section}</span>
-          <span class="cat-topic-name">${t.name}</span>
-          <span class="status-pill status-${t.status}" onclick="cycleStatus(${i})">${t.status==='todo'?'To do':t.status==='wip'?'In progress':'Done ✓'}</span>
-        </div>`
-      ).join('')
-    : '<p style="font-size:13px;color:var(--ink-muted);">No topics yet. Add one below!</p>';
-
-  // Logs
-  document.getElementById('cat-log-list').innerHTML = S.studyLogs.slice(0,8).map(l =>
-    `<div class="log-entry"><div class="log-dot"></div><div class="log-text">${l.text}</div><div class="log-time">${l.time}</div></div>`
-  ).join('') || '<p style="font-size:13px;color:var(--ink-muted);">No entries yet. Log what you studied!</p>';
-
+// CAT
+function renderCat(){
+  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const wd=S.streak.days||[0,0,0,0,0,0,0];
+  document.getElementById('streak-row').innerHTML=days.map((d,i)=>`<div class="streak-cell ${wd[i]?'done':''}"><span>${d}</span><div class="sc-dot"></div></div>`).join('');
+  const tw=wd.filter(Boolean).length;
+  document.getElementById('streak-sub').textContent=tw+' day'+(tw!==1?'s':'')+' this week'+(tw>=5?' 🔥 On fire!':tw>=3?' 💪 Good going!':' — keep it up!');
+  const cl=Math.max(S.longestStreak||0,computeLongest(wd));
+  document.getElementById('streak-total').textContent=S.totalStudyDays||0;
+  document.getElementById('streak-longest').textContent=cl;
+  document.getElementById('cat-topic-list').innerHTML=S.catTopics.length
+    ?S.catTopics.map((t,i)=>`<div class="cat-topic-item"><span class="cat-section-badge badge-${t.section.toLowerCase()}">${t.section}</span><span class="cat-topic-name">${t.name}</span><span class="status-pill status-${t.status}" onclick="cycleStatus(${i})">${t.status==='todo'?'To do':t.status==='wip'?'In progress':'Done ✓'}</span></div>`).join('')
+    :'<p style="font-size:13px;color:var(--ink-muted);">No topics yet!</p>';
+  document.getElementById('cat-log-list').innerHTML=S.studyLogs.slice(0,8).map(l=>`<div class="log-entry"><div class="log-dot"></div><div class="log-text">${l.text}</div><div class="log-time">${l.time}</div></div>`).join('')||'<p style="font-size:13px;color:var(--ink-muted);">No entries yet.</p>';
   updateOverview();
 }
-
-function cycleStatus(i) {
-  const cycle = ['todo','wip','done'];
-  const cur = cycle.indexOf(S.catTopics[i].status);
-  S.catTopics[i].status = cycle[(cur+1)%3];
-  save(); renderCat();
-  if (S.catTopics[i].status==='done') toast('🎉 Topic done! CAT is yours!');
+function cycleStatus(i){
+  const cycle=['todo','wip','done'];
+  const cur=cycle.indexOf(S.catTopics[i].status);
+  S.catTopics[i].status=cycle[(cur+1)%3];
+  save();renderCat();if(S.catTopics[i].status==='done')toast('🎉 Topic done! CAT is yours!');
+}
+function addCatTopic(){
+  const n=document.getElementById('cat-topic-inp').value.trim();
+  const sec=document.getElementById('cat-section-sel').value;
+  if(!n)return;
+  S.catTopics.push({name:n,section:sec,status:'todo'});
+  document.getElementById('cat-topic-inp').value='';
+  save();renderCat();toast('Topic added! 📚');
+}
+function addStudyLog(){
+  const v=document.getElementById('cat-log-inp').value.trim();
+  if(!v)return;
+  const now=new Date();
+  const t=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  S.studyLogs.unshift({text:v,time:t});
+  if(S.studyLogs.length>30)S.studyLogs=S.studyLogs.slice(0,30);
+  const dayIdx=now.getDay();const idx=dayIdx===0?6:dayIdx-1;
+  const already=S.streak.days[idx];
+  S.streak.days[idx]=1;
+  if(!already){S.totalStudyDays=(S.totalStudyDays||0)+1;S.longestStreak=Math.max(S.longestStreak||0,computeLongest(S.streak.days));}
+  document.getElementById('cat-log-inp').value='';
+  save();renderCat();toast('Logged! You are unstoppable 🌟');
 }
 
-function addCatTopic() {
-  const n = document.getElementById('cat-topic-inp').value.trim();
-  const sec = document.getElementById('cat-section-sel').value;
-  if (!n) return;
-  S.catTopics.push({ name:n, section:sec, status:'todo' });
-  document.getElementById('cat-topic-inp').value = '';
-  save(); renderCat();
-  toast('Topic added! Study hard 📚');
+// ===== PERIOD CYCLE =====
+const PHASES=[
+  {name:'Menstrual',emoji:'🩸',color:'#e07a96',bg:'#fce8ef',advice:'Rest, stay warm, iron-rich foods (spinach, dates). Be gentle with yourself 💕'},
+  {name:'Follicular',emoji:'🌱',color:'#a98fd4',bg:'#fdf0f4',advice:'Energy rising! Great time to start new things, exercise, and study hard 💪'},
+  {name:'Ovulation',emoji:'🌸',color:'#3daa7f',bg:'#eaf3de',advice:'Peak energy & confidence! Social, creative, and communicative phase ✨'},
+  {name:'Luteal',emoji:'🌙',color:'#c9922a',bg:'#faeeda',advice:'Wind down slowly. Cravings normal — prefer complex carbs, magnesium foods 🍫'}
+];
+
+function getPhaseForDay(day,cycleLen,periodDur){
+  if(day<=periodDur)return 0;
+  const ovDay=Math.round(cycleLen-14);
+  if(day<=Math.round(cycleLen*0.4))return 1;
+  if(day<=ovDay+1)return 2;
+  return 3;
 }
 
-function addStudyLog() {
-  const v = document.getElementById('cat-log-inp').value.trim();
-  if (!v) return;
-  const now = new Date();
-  const t = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
-  S.studyLogs.unshift({ text:v, time:t });
-  if (S.studyLogs.length > 30) S.studyLogs = S.studyLogs.slice(0,30);
+function getCycleInfo(){
+  if(!S.periodStart)return null;
+  const start=new Date(S.periodStart);
+  const now=new Date();
+  const diff=Math.floor((now-start)/(1000*60*60*24));
+  const cycleLen=S.cycleLen||28;
+  const periodDur=S.periodDur||5;
+  const dayOfCycle=(diff%cycleLen)+1;
+  const phaseIdx=getPhaseForDay(dayOfCycle,cycleLen,periodDur);
+  const phase=PHASES[phaseIdx];
+  const daysUntilNext=cycleLen-dayOfCycle+1;
+  const nextPeriod=new Date(now.getTime()+daysUntilNext*86400000);
+  const ovDay=Math.round(cycleLen-14);
+  const fertileStart=new Date(start.getTime()+(diff-dayOfCycle+ovDay-2)*86400000);
+  const fertileEnd=new Date(fertileStart.getTime()+5*86400000);
+  const ovDate=new Date(start.getTime()+(diff-dayOfCycle+ovDay)*86400000);
+  return{dayOfCycle,cycleLen,periodDur,phaseIdx,phaseName:phase.name,phaseAdvice:phase.advice,phaseEmoji:phase.emoji,daysUntilNext,nextPeriod,fertileStart,fertileEnd,ovDate,periodStart:start};
+}
 
-  // Mark today in this week's streak
-  const dayIdx = now.getDay(); // 0=Sun
-  const idx = dayIdx === 0 ? 6 : dayIdx - 1;
-  const alreadyMarked = S.streak.days[idx];
-  S.streak.days[idx] = 1;
+function saveCycle(){
+  S.periodStart=document.getElementById('period-start-input').value;
+  S.cycleLen=parseInt(document.getElementById('cycle-len-input').value)||28;
+  S.periodDur=parseInt(document.getElementById('period-dur-input').value)||5;
+  save();renderCycleResult();toast('Cycle saved! 🌙');
+}
 
-  // Only count each calendar day once toward total
-  if (!alreadyMarked) {
-    S.totalStudyDays = (S.totalStudyDays || 0) + 1;
-    // Update longest streak record in real time
-    S.longestStreak = Math.max(S.longestStreak || 0, computeLongest(S.streak.days));
+function renderCycleResult(){
+  if(S.periodStart){
+    document.getElementById('period-start-input').value=S.periodStart;
+    document.getElementById('cycle-len-input').value=S.cycleLen||28;
+    document.getElementById('period-dur-input').value=S.periodDur||5;
   }
-
-  document.getElementById('cat-log-inp').value = '';
-  save(); renderCat();
-  toast('Logged! You are unstoppable 🌟');
-}
-
-// ============ BIRTHDAY ============
-const BDAY_MONTH = 4; // April (0-indexed = 3, but we use getMonth which is 0-indexed)
-const BDAY_DAY = 12;
-
-function getBirthdayInfo() {
-  const now = new Date();
-  const thisYear = now.getFullYear();
-  let bday = new Date(thisYear, 3, 12); // April = month 3
-  if (now > bday) bday = new Date(thisYear + 1, 3, 12);
-  const diff = bday - now;
-  const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-  const isToday = now.getMonth() === 3 && now.getDate() === 12;
-  return { days, isToday };
-}
-
-function renderBirthday() {
-  const { days, isToday } = getBirthdayInfo();
-  const hero = document.getElementById('bday-dynamic-content');
-
-  if (isToday) {
-    hero.innerHTML = `
-      <span class="cake-wrapper">🎂</span>
-      <div class="confetti-strip">🎉🎊🎈🌸🎁🎀🥳</div>
-      <div class="bday-its-today">Happy Birthday, Tania! 🎂</div>
-      <p style="font-size:14px;color:var(--ink-soft);margin-top:8px;">Today is YOUR day. Shine bright! ✨</p>
-    `;
-    // pulse the nav btn
-    const btn = document.getElementById('bday-nav-btn');
-    if (btn) btn.style.background = 'linear-gradient(135deg,#f4a7b9,#d9c6f0)';
-    launchFireworks();
-  } else {
-    hero.innerHTML = `
-      <div style="font-size:40px;margin-bottom:8px;">🎂</div>
-      <div class="bday-countdown">${days}</div>
-      <div class="bday-count-lbl">day${days!==1?'s':''} until Tania's birthday</div>
-      <p style="font-size:13px;color:var(--ink-soft);margin-top:10px;">April 12th — mark your calendar! 🎀</p>
-    `;
-  }
-
-  // Candles (24 candles — you can change this number)
-  const numCandles = 22;
-  if (!S.candlesBlown) S.candlesBlown = [];
-  const candleColors = ['#f4a7b9','#d9c6f0','#b8e8d4','#f5c97a','#bcd9f5','#fce8ef'];
-  document.getElementById('candles-row').innerHTML = Array.from({length: numCandles}, (_,i) => {
-    const blown = S.candlesBlown.includes(i);
-    const col = candleColors[i % candleColors.length];
-    return `<div class="candle" onclick="blowCandle(${i})">
-      <div class="candle-flame ${blown?'blown':''}">🔥</div>
-      <div class="candle-body" style="background:${col};"></div>
-      <div class="candle-base"></div>
+  const card=document.getElementById('cycle-result-card');
+  if(!S.periodStart){card.style.display='none';renderCycleNotes();return;}
+  card.style.display='block';
+  const info=getCycleInfo();
+  const phase=PHASES[info.phaseIdx];
+  document.getElementById('cycle-today-sub').textContent=`Day ${info.dayOfCycle} of ${info.cycleLen} • ${phase.name} phase ${phase.emoji}`;
+  document.getElementById('cycle-day-num').textContent=info.dayOfCycle;
+  document.getElementById('cycle-phase-tag').textContent=phase.name;
+  // Arc
+  const pct=info.dayOfCycle/info.cycleLen;
+  const circumference=2*Math.PI*68;
+  const arc=document.getElementById('cycle-arc');
+  arc.setAttribute('stroke-dashoffset',circumference*(1-pct));
+  arc.setAttribute('stroke',phase.color);
+  // Phase cards
+  document.getElementById('cycle-phase-cards').innerHTML=PHASES.map((p,i)=>{
+    const isActive=i===info.phaseIdx;
+    return `<div class="phase-card phase-${p.name.toLowerCase()} ${isActive?'active-phase':''}">
+      <div class="phase-name">${p.emoji} ${p.name} ${isActive?'← you are here':''}</div>
+      <div class="phase-days">${p.name==='Menstrual'?`Days 1–${info.periodDur}`:p.name==='Follicular'?`Days ${info.periodDur+1}–${Math.round(info.cycleLen*0.4)}`:p.name==='Ovulation'?`Around day ${Math.round(info.cycleLen-14)}`:`Days ${Math.round(info.cycleLen*0.4)+1}–${info.cycleLen}`}</div>
+      ${isActive?`<div class="phase-tip">${p.advice}</div>`:''}
     </div>`;
   }).join('');
+  document.getElementById('next-period-date').textContent=info.nextPeriod.toLocaleDateString('en-IN',{day:'numeric',month:'long'});
+  document.getElementById('fertile-window').textContent=info.fertileStart.toLocaleDateString('en-IN',{day:'numeric',month:'short'})+' – '+info.fertileEnd.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+  document.getElementById('ovulation-day').textContent=info.ovDate.toLocaleDateString('en-IN',{day:'numeric',month:'long'});
+  renderCycleNotes();
+}
 
+function addCycleNote(){
+  const text=document.getElementById('cycle-note-text').value.trim();
+  if(!text)return;
+  if(!S.cycleNotes)S.cycleNotes=[];
+  S.cycleNotes.unshift({text,date:todayISO()});
+  document.getElementById('cycle-note-text').value='';
+  save();renderCycleNotes();toast('Note saved 🌙');
+}
+function renderCycleNotes(){
+  if(!S.cycleNotes)S.cycleNotes=[];
+  const el=document.getElementById('cycle-notes-list');
+  el.innerHTML=S.cycleNotes.slice(0,10).map((n,i)=>`<div class="log-entry"><div class="log-dot" style="background:var(--rose-deep);"></div><div class="log-text">${n.text}</div><div class="log-time">${fmtDate(n.date)}</div></div>`).join('')||'<p style="font-size:13px;color:var(--ink-muted);">No notes yet.</p>';
+}
+
+// ===== MESSAGES FROM HARSHIT =====
+function addMessage(){
+  const text=document.getElementById('msg-text-input').value.trim();
+  const date=document.getElementById('msg-date-input').value||todayISO();
+  const label=document.getElementById('msg-label-input').value.trim();
+  if(!text){toast('Paste a message first!');return;}
+  if(!S.messages)S.messages=[];
+  S.messages.unshift({text,date,label,id:Date.now()});
+  document.getElementById('msg-text-input').value='';
+  document.getElementById('msg-date-input').value='';
+  document.getElementById('msg-label-input').value='';
+  save();renderMessages();toast('Message saved forever 💌');
+}
+function deleteMessage(id){S.messages=S.messages.filter(m=>m.id!==id);save();renderMessages();}
+function renderMessages(){
+  if(!S.messages)S.messages=[];
+  document.getElementById('msg-count-lbl').textContent=S.messages.length+' message'+(S.messages.length!==1?'s':'')+' saved';
+  const el=document.getElementById('msg-list');
+  el.innerHTML=S.messages.map(m=>`<div class="msg-item">
+    <button class="msg-del" onclick="deleteMessage(${m.id})">×</button>
+    ${m.label?`<div style="font-size:11px;font-weight:500;color:var(--lav-deep);margin-bottom:6px;">📌 ${m.label}</div>`:''}
+    <div class="msg-text">${m.text}</div>
+    <div class="msg-meta"><span class="msg-date">📅 ${fmtDate(m.date)}</span><span class="msg-from">♥ from Harshit</span></div>
+  </div>`).join('')||'<p style="font-size:13px;color:var(--ink-muted);">No messages saved yet. Save the sweet ones! 💌</p>';
+}
+
+// ===== DATE PLANNER =====
+function addDatePlan(){
+  const date=document.getElementById('dp-date').value;
+  const place=document.getElementById('dp-place').value.trim();
+  const outfit=document.getElementById('dp-outfit').value.trim();
+  const notes=document.getElementById('dp-notes').value.trim();
+  if(!place){toast('Add a place / plan!');return;}
+  if(!S.datePlans)S.datePlans=[];
+  S.datePlans.push({date,place,outfit,notes,id:Date.now()});
+  S.datePlans.sort((a,b)=>a.date>b.date?1:-1);
+  document.getElementById('dp-date').value='';
+  document.getElementById('dp-place').value='';
+  document.getElementById('dp-outfit').value='';
+  document.getElementById('dp-notes').value='';
+  save();renderDatePlans();toast('Date planned! 🌹');
+}
+function deleteDatePlan(id){S.datePlans=S.datePlans.filter(d=>d.id!==id);save();renderDatePlans();}
+function renderDatePlans(){
+  if(!S.datePlans)S.datePlans=[];
+  const el=document.getElementById('date-plans-list');
+  el.innerHTML=S.datePlans.map(dp=>`<div class="date-plan-item">
+    <button class="msg-del" onclick="deleteDatePlan(${dp.id})">×</button>
+    <div class="date-plan-header">
+      ${dp.date?`<span class="date-plan-date">📅 ${fmtDate(dp.date)}</span>`:''}
+      <span class="date-plan-place">📍 ${dp.place}</span>
+    </div>
+    ${dp.outfit?`<div class="date-plan-outfit"><span class="outfit-emoji">👗</span><span>${dp.outfit}</span></div>`:''}
+    ${dp.notes?`<div style="font-size:13px;color:var(--ink-muted);margin-top:6px;">💭 ${dp.notes}</div>`:''}
+  </div>`).join('')||'<p style="font-size:13px;color:var(--ink-muted);">No dates planned yet! Plan something special 🌹</p>';
+}
+
+// ===== GOSSIP =====
+function addGossip(){
+  const text=document.getElementById('gossip-text').value.trim();
+  const tag=document.getElementById('gossip-tag-inp').value.trim();
+  if(!text){toast('Spill the tea first! ☕');return;}
+  if(!S.gossip)S.gossip=[];
+  S.gossip.unshift({text,tag,date:todayISO(),id:Date.now()});
+  document.getElementById('gossip-text').value='';
+  document.getElementById('gossip-tag-inp').value='';
+  save();renderGossip();toast('Stored in the vault 🤫');
+}
+function deleteGossip(id){S.gossip=S.gossip.filter(g=>g.id!==id);save();renderGossip();}
+function renderGossip(){
+  if(!S.gossip)S.gossip=[];
+  document.getElementById('gossip-count-lbl').textContent=S.gossip.length+' stor'+(S.gossip.length!==1?'ies':'y')+' waiting to be told';
+  const el=document.getElementById('gossip-list');
+  el.innerHTML=S.gossip.map(g=>`<div class="gossip-item">
+    <button class="gossip-del" onclick="deleteGossip(${g.id})">×</button>
+    <div class="gossip-text">${g.text}</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+      ${g.tag?`<span class="gossip-tag">#${g.tag}</span>`:''}
+      <span style="font-size:11px;color:var(--ink-muted);">${fmtDate(g.date)}</span>
+    </div>
+  </div>`).join('')||'<p style="font-size:13px;color:var(--ink-muted);">Vault is empty! Add some tea ☕</p>';
+}
+
+// ===== CALENDAR =====
+let calYear=new Date().getFullYear(),calMonth=new Date().getMonth();
+
+function getPeriodDays(){
+  const days=new Set();
+  if(!S.periodStart)return days;
+  const start=new Date(S.periodStart);
+  const cycleLen=S.cycleLen||28;
+  const dur=S.periodDur||5;
+  for(let c=0;c<12;c++){
+    const cycleStart=new Date(start.getTime()+c*cycleLen*86400000);
+    for(let d=0;d<dur;d++){
+      const day=new Date(cycleStart.getTime()+d*86400000);
+      days.add(day.toISOString().split('T')[0]);
+    }
+  }
+  return days;
+}
+
+function getFertileDays(){
+  const days=new Set();
+  if(!S.periodStart)return days;
+  const start=new Date(S.periodStart);
+  const cycleLen=S.cycleLen||28;
+  const ovDay=cycleLen-14;
+  for(let c=0;c<12;c++){
+    const cycleStart=new Date(start.getTime()+c*cycleLen*86400000);
+    for(let d=ovDay-2;d<=ovDay+1;d++){
+      const day=new Date(cycleStart.getTime()+d*86400000);
+      days.add(day.toISOString().split('T')[0]);
+    }
+  }
+  return days;
+}
+
+function renderCalendar(){
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-lbl').textContent=months[calMonth]+' '+calYear;
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const daysInPrev=new Date(calYear,calMonth,0).getDate();
+  const todayStr=new Date().toISOString().split('T')[0];
+  const specialMap={};
+  (S.specialDates||[]).forEach(e=>{specialMap[e.date]={name:e.name,type:e.type};});
+  const periodDays=getPeriodDays();
+  const fertileDays=getFertileDays();
+  let html='';
+  const dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  dow.forEach(d=>{html+=`<div class="cal-dow">${d}</div>`;});
+  const startOffset=firstDay;
+  for(let i=0;i<startOffset;i++){
+    const day=daysInPrev-startOffset+i+1;
+    html+=`<div class="cal-day other-month">${day}</div>`;
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const iso=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const sp=specialMap[iso];
+    const isTodayDay=iso===todayStr;
+    const isPeriod=periodDays.has(iso);
+    const isFertile=fertileDays.has(iso)&&!isPeriod;
+    let cls='cal-day';
+    if(sp&&sp.type==='deep')cls+=' special-deep';
+    else if(sp&&sp.type==='light')cls+=' special-light';
+    else if(isTodayDay)cls+=' today';
+    if(isPeriod)cls+=' period-day';
+    if(isFertile)cls+=' fertile-day';
+    const dot=sp&&sp.type!=='deep'?'':'';
+    html+=`<div class="${cls}" title="${sp?sp.name:''}">${d}${sp&&sp.type==='deep'?'':''}${!sp&&!isPeriod&&!isFertile&&!isTodayDay?'':''}</div>`;
+  }
+  const totalCells=startOffset+daysInMonth;
+  const remaining=(7-totalCells%7)%7;
+  for(let i=1;i<=remaining;i++)html+=`<div class="cal-day other-month">${i}</div>`;
+  document.getElementById('cal-grid').innerHTML=html;
+  renderSpecialEvents();
+}
+
+function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
+
+function addSpecialDate(){
+  const date=document.getElementById('sp-date-inp').value;
+  const name=document.getElementById('sp-name-inp').value.trim();
+  const type=document.getElementById('sp-type-inp').value;
+  if(!date||!name){toast('Add date and name!');return;}
+  if(!S.specialDates)S.specialDates=[];
+  S.specialDates.push({date,name,type});
+  S.specialDates.sort((a,b)=>a.date>b.date?1:-1);
+  document.getElementById('sp-date-inp').value='';
+  document.getElementById('sp-name-inp').value='';
+  save();renderCalendar();toast('Date added! 💕');
+}
+function removeSpecialDate(i){S.specialDates.splice(i,1);save();renderCalendar();renderSpecialEvents();}
+function renderSpecialEvents(){
+  if(!S.specialDates)S.specialDates=[];
+  const el=document.getElementById('special-events-list');
+  el.innerHTML=S.specialDates.map((e,i)=>`<div class="special-event-item">
+    <span class="special-event-date">${fmtDate(e.date)}</span>
+    <span class="special-event-name">${e.type==='deep'?'💗':'🌸'} ${e.name}</span>
+    <button class="special-event-del" onclick="removeSpecialDate(${i})">×</button>
+  </div>`).join('')||'<p style="font-size:13px;color:var(--ink-muted);">No special dates yet!</p>';
+}
+
+// ===== BIRTHDAY =====
+function getBirthdayInfo(){
+  const now=new Date();const thisYear=now.getFullYear();
+  let bday=new Date(thisYear,3,12);
+  if(now>bday)bday=new Date(thisYear+1,3,12);
+  const diff=bday-now;
+  const days=Math.ceil(diff/(1000*60*60*24));
+  const isToday=now.getMonth()===3&&now.getDate()===12;
+  return{days,isToday};
+}
+function renderBirthday(){
+  const{days,isToday}=getBirthdayInfo();
+  const hero=document.getElementById('bday-dynamic-content');
+  if(isToday){
+    hero.innerHTML=`<span class="cake-wrapper">🎂</span><div class="confetti-strip">🎉🎊🎈🌸🎁🎀🥳</div><div class="bday-its-today">Happy Birthday, Tania!</div><p style="font-size:14px;color:var(--ink-soft);margin-top:8px;">Today is YOUR day ✨ — with all my love, Harshit 💕</p>`;
+    document.getElementById('bday-nav-btn').style.background='linear-gradient(135deg,#f4a7b9,#d9c6f0)';
+    launchFireworks();
+  }else{
+    hero.innerHTML=`<div style="font-size:40px;margin-bottom:8px;">🎂</div><div class="bday-countdown">${days}</div><div class="bday-count-lbl">day${days!==1?'s':''} until Tania's birthday</div><p style="font-size:13px;color:var(--ink-soft);margin-top:10px;">April 12th 🎀 — Harshit is counting down too!</p>`;
+  }
+  const numCandles=22;
+  if(!S.candlesBlown)S.candlesBlown=[];
+  const candleColors=['#f4a7b9','#d9c6f0','#b8e8d4','#f5c97a','#bcd9f5','#fce8ef'];
+  document.getElementById('candles-row').innerHTML=Array.from({length:numCandles},(_,i)=>{
+    const blown=S.candlesBlown.includes(i);
+    return `<div class="candle" onclick="blowCandle(${i})"><div class="candle-flame ${blown?'blown':''}">🔥</div><div class="candle-body" style="background:${candleColors[i%candleColors.length]};"></div><div class="candle-base"></div></div>`;
+  }).join('');
   updateCandleMsg();
-
-  // Bucket list
-  if (!S.bucketList) S.bucketList = [
-    'Crack CAT 🎯',
-    'Try a new cuisine 🍜',
-    'Take a solo trip somewhere 🌏',
-    'Read 5 books 📚',
-    'Learn something completely new 🌱'
-  ];
+  if(!S.bucketList)S.bucketList=['Crack CAT 🎯','Try a new cuisine 🍜','Take a solo trip 🌏','Read 5 books 📚','Learn something new 🌱'];
   renderBucketList();
 }
+function blowCandle(i){if(!S.candlesBlown)S.candlesBlown=[];if(!S.candlesBlown.includes(i)){S.candlesBlown.push(i);save();renderBirthday();toast('💨 Poof!');}}
+function blowAllCandles(){S.candlesBlown=Array.from({length:22},(_,i)=>i);save();renderBirthday();launchFireworks();toast('🎉 Happy Birthday Tania!!');}
+function updateCandleMsg(){const total=22;const blown=(S.candlesBlown||[]).length;const msg=blown===0?'Blow out your candles and make a wish! 🌟':blown<total?`${blown} of ${total} candles blown — keep going!`:'🎉 All blown! Your wish is on its way! ✨';document.getElementById('candle-msg').textContent=msg;}
+function launchFireworks(){const fw=document.getElementById('fireworks');fw.innerHTML='';const emojis=['🎉','🎊','🌸','⭐','💫','🎈','🥳','✨','🌟','💖'];for(let i=0;i<24;i++){setTimeout(()=>{const el=document.createElement('div');el.className='fw';el.textContent=emojis[Math.floor(Math.random()*emojis.length)];el.style.cssText=`left:${5+Math.random()*90}%;top:${10+Math.random()*70}%;animation-delay:${Math.random()*.4}s;font-size:${20+Math.random()*20}px;`;fw.appendChild(el);setTimeout(()=>el.remove(),1600);},i*80);}}
+function addBucketItem(){const v=document.getElementById('bucket-inp').value.trim();if(!v)return;if(!S.bucketList)S.bucketList=[];S.bucketList.push(v);document.getElementById('bucket-inp').value='';save();renderBucketList();toast('Dream added! 🌟');}
+function removeBucketItem(i){S.bucketList.splice(i,1);save();renderBucketList();}
+function renderBucketList(){document.getElementById('bday-bucket-list').innerHTML=(S.bucketList||[]).map((item,i)=>`<div class="food-item"><div class="food-dot" style="background:var(--lav-deep);"></div><span class="food-name">${item}</span><button class="food-del" onclick="removeBucketItem(${i})">×</button></div>`).join('')||'<p style="font-size:13px;color:var(--ink-muted);">Add your dreams!</p>';}
 
-function blowCandle(i) {
-  if (!S.candlesBlown) S.candlesBlown = [];
-  if (!S.candlesBlown.includes(i)) {
-    S.candlesBlown.push(i);
-    save();
-    renderBirthday();
-    toast('💨 Poof!');
-  }
-}
+// ===== SPLASH =====
+function hideSplash(){setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('hidden');setTimeout(()=>s.style.display='none',700);},1800);}
 
-function blowAllCandles() {
-  const num = 22;
-  S.candlesBlown = Array.from({length: num}, (_,i) => i);
-  save(); renderBirthday();
-  launchFireworks();
-  toast('🎉 Happy Birthday Tania!!');
-}
-
-function updateCandleMsg() {
-  const total = 22;
-  const blown = (S.candlesBlown || []).length;
-  const msg = blown === 0 ? 'Blow out your candles and make a wish! 🌟'
-    : blown < total ? `${blown} of ${total} candles blown — keep going!`
-    : '🎉 All candles blown! Your wish is on its way! ✨';
-  document.getElementById('candle-msg').textContent = msg;
-}
-
-function launchFireworks() {
-  const fw = document.getElementById('fireworks');
-  fw.innerHTML = '';
-  const emojis = ['🎉','🎊','🌸','⭐','💫','🎈','🥳','✨','🌟','💖'];
-  for (let i = 0; i < 24; i++) {
-    setTimeout(() => {
-      const el = document.createElement('div');
-      el.className = 'fw';
-      el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-      el.style.cssText = `left:${5+Math.random()*90}%;top:${10+Math.random()*70}%;animation-delay:${Math.random()*0.4}s;font-size:${20+Math.random()*20}px;`;
-      fw.appendChild(el);
-      setTimeout(() => el.remove(), 1600);
-    }, i * 80);
-  }
-}
-
-function addBucketItem() {
-  const v = document.getElementById('bucket-inp').value.trim();
-  if (!v) return;
-  if (!S.bucketList) S.bucketList = [];
-  S.bucketList.push(v);
-  document.getElementById('bucket-inp').value = '';
-  save(); renderBucketList();
-  toast('Dream added! 🌟');
-}
-
-function renderBucketList() {
-  if (!S.bucketList) return;
-  document.getElementById('bday-bucket-list').innerHTML = S.bucketList.map((item, i) =>
-    `<div class="food-item">
-      <div class="food-dot" style="background:var(--lav-deep);"></div>
-      <span class="food-name">${item}</span>
-      <button class="food-del" onclick="removeBucketItem(${i})">×</button>
-    </div>`
-  ).join('') || '<p style="font-size:13px;color:var(--ink-muted);">Add your dreams for the year!</p>';
-}
-
-function removeBucketItem(i) {
-  S.bucketList.splice(i,1);
-  save(); renderBucketList();
-}
-
-
-// ============ CYCLE============
-function saveCycle() {
-  S.cycle = {
-    date: document.getElementById('cycle-date').value,
-    length: parseInt(document.getElementById('cycle-length').value) || 28
-  };
-  save();
-  renderCycle();
-}
-
-function renderCycle() {
-  if (!S.cycle || !S.cycle.date) return;
-
-  const start = new Date(S.cycle.date);
-  const next = new Date(start);
-  next.setDate(start.getDate() + S.cycle.length);
-
-  document.getElementById('next-period').textContent =
-    next.toLocaleDateString('en-IN');
-}
-
-// ============ LETTERS ============
-function addLetter() {
-  const text = document.getElementById('letter-input').value.trim();
-  if (!text) return;
-
-  if (!S.letters) S.letters = [];
-
-  S.letters.unshift({
-    text,
-    date: new Date().toLocaleString('en-IN')
-  });
-
-  document.getElementById('letter-input').value = '';
-  save();
-  renderLetters();
-}
-
-function renderLetters() {
-  const el = document.getElementById('letters-list');
-  if (!S.letters || !S.letters.length) {
-    el.innerHTML = '<p style="color:var(--ink-muted);font-size:13px;">No letters yet 💌</p>';
-    return;
-  }
-
-  el.innerHTML = S.letters.map(l => `
-    <div class="log-entry">
-      <div class="log-dot"></div>
-      <div class="log-text">${l.text}</div>
-      <div class="log-time">${l.date}</div>
-    </div>
-  `).join('');
-}  
-
-// ============ SPLASH ============
-function hideSplash() {
-  setTimeout(() => {
-    const s = document.getElementById('splash');
-    s.classList.add('hidden');
-    setTimeout(() => s.style.display = 'none', 700);
-  }, 1600);
-}
-
-// ============ INIT ============
-function init() {
+// ===== INIT =====
+function init(){
   hideSplash();
   renderHeader();
-  document.getElementById('cal-goal').value = S.calGoal;
-  renderCalories();
-  renderWater();
-  renderMeals();
-  renderReminders();
-  renderSkincare();
-  renderCat();
-  renderBirthday();
-  renderCycle();
-  renderLetters();
+  document.getElementById('cal-goal').value=S.calGoal;
+  renderCalories();renderWater();renderMeals();renderReminders();
+  renderSkincare();renderCat();renderBirthday();renderMessages();
+  renderDatePlans();renderGossip();renderCycleResult();
   updateOverview();
-
-  // Highlight birthday nav if birthday is today or within 3 days
-  const { days, isToday } = getBirthdayInfo();
-  if (isToday || days <= 3) {
-    const btn = document.getElementById('bday-nav-btn');
-    if (btn && !isToday) btn.style.boxShadow = '0 0 0 2px var(--rose-deep)';
-  }
+  const{days,isToday}=getBirthdayInfo();
+  if(isToday||days<=3){const btn=document.getElementById('bday-nav-btn');if(btn&&!isToday)btn.style.boxShadow='0 0 0 2px var(--rose-deep)';}
 }
-
 init();
 </script>
 </body>
