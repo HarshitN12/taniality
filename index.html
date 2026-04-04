@@ -30,12 +30,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink)
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 10% 10%,#fce8ef88 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 90% 20%,#d9c6f055 0%,transparent 60%),radial-gradient(ellipse 40% 60% at 80% 80%,#b8e8d433 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 20% 80%,#bcd9f533 0%,transparent 60%);pointer-events:none;z-index:0;}
 .petal{position:fixed;width:8px;height:8px;border-radius:80% 0 80% 0;opacity:0;animation:fall linear infinite;pointer-events:none;z-index:0;}
 @keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:.6}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
-#splash{position:fixed;inset:0;z-index:9999;background:#fdf0f4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .6s ease;}
+#splash{position:fixed;inset:0;z-index:9999;background:#fdf0f4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease;}
 #splash.hidden{opacity:0;pointer-events:none;}
-#splash-emoji{font-size:72px;animation:splashPop .7s cubic-bezier(.34,1.56,.64,1) both;}
-#splash h1{font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);}
-#splash p{font-size:13px;color:var(--ink-muted);}
-#splash .love-tag{font-size:11px;color:var(--rose-deep);margin-top:4px;letter-spacing:.05em;}
+#splash-emoji{font-size:72px;animation:splashPop .6s cubic-bezier(.34,1.56,.64,1) both;}
+#splash h1{font-family:'Playfair Display',serif;font-size:28px;color:#2d1f2e;}
+#splash p{font-size:13px;color:#a07ca4;}
+#splash .love-tag{font-size:11px;color:#e07a96;margin-top:4px;letter-spacing:.05em;}
 @keyframes splashPop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
 .wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 16px 80px;}
 .header{text-align:center;padding:36px 0 12px;animation:fadeUp .8s ease both;}
@@ -242,28 +242,22 @@ select.inp{appearance:none;}
 @media(max-width:500px){.overview-chips{grid-template-columns:repeat(2,1fr);}.header h1{font-size:26px;}.nav-btn{font-size:11px;padding:7px 10px;}.cycle-phase-cards{grid-template-columns:1fr;}}
 </style>
 </head>
-<body>
+<body style="background:#fdf0f4;">
 
-<div id="splash">
-  <div id="splash-emoji">🌸</div>
-  <h1>Taniality</h1>
-  <p>My little universe</p>
-  <div class="love-tag">made with love by Harshit ♥</div>
+<div id="splash" style="position:fixed;inset:0;z-index:9999;background:#fdf0f4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+  <div style="font-size:60px;">🌸</div>
+  <h1 style="font-family:'Playfair Display',serif;font-size:26px;color:#2d1f2e;">Taniality</h1>
+  <p style="font-size:13px;color:#a07ca4;">Our little universe</p>
 </div>
 
 <div class="fireworks" id="fireworks"></div>
-
-<script>
-const colors=['#f4a7b9','#d9c6f0','#b8e8d4','#f5c97a','#bcd9f5'];
-for(let i=0;i<14;i++){const p=document.createElement('div');p.className='petal';p.style.cssText=`left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-duration:${8+Math.random()*10}s;animation-delay:${Math.random()*12}s;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;`;document.body.appendChild(p);}
-</script>
 
 <div class="wrap">
 
   <div class="header">
     <div class="header-date" id="hdate"></div>
     <h1>Taniality <span>✨</span></h1>
-    <div class="header-sub">My little universe</div>
+    <div class="header-sub">Our little universe</div>
     <div class="header-love">made with love by Harshit ♥</div>
   </div>
 
@@ -287,6 +281,7 @@ for(let i=0;i<14;i++){const p=document.createElement('div');p.className='petal';
     <button class="nav-btn" onclick="goTab('dates',this)">🌹 Date Plans</button>
     <button class="nav-btn" onclick="goTab('gossip',this)">🤫 Gossip</button>
     <button class="nav-btn" onclick="goTab('calendar',this)">🗓 Calendar</button>
+    <button class="nav-btn" onclick="goTab('driver',this)">🚗 Driver</button>
     <button class="nav-btn" id="bday-nav-btn" onclick="goTab('birthday',this)">🎂 Birthday</button>
   </div>
 
@@ -364,22 +359,21 @@ for(let i=0;i<14;i++){const p=document.createElement('div');p.className='petal';
   <div class="section" id="sec-meals">
     <div class="card">
       <div class="card-head"><div class="card-icon" style="background:#eaf3de;">🥗</div><div><div class="card-title">Today's meal plan</div></div></div>
-      <div class="meal-row"><div class="meal-emoji">🌅</div><div class="meal-tag">Breakfast</div><input class="meal-inp" id="m-0" placeholder="e.g. Oats with banana" oninput="saveMeals()"></div>
-      <div class="meal-row"><div class="meal-emoji">🍎</div><div class="meal-tag">Mid-morning</div><input class="meal-inp" id="m-1" placeholder="e.g. Apple + almonds" oninput="saveMeals()"></div>
-      <div class="meal-row"><div class="meal-emoji">☀️</div><div class="meal-tag">Lunch</div><input class="meal-inp" id="m-2" placeholder="e.g. Dal rice + sabzi" oninput="saveMeals()"></div>
-      <div class="meal-row"><div class="meal-emoji">🍵</div><div class="meal-tag">Snack</div><input class="meal-inp" id="m-3" placeholder="e.g. Chai + makhana" oninput="saveMeals()"></div>
-      <div class="meal-row"><div class="meal-emoji">🌙</div><div class="meal-tag">Dinner</div><input class="meal-inp" id="m-4" placeholder="e.g. Chapati + paneer" oninput="saveMeals()"></div>
+      <div class="meal-row"><div class="meal-emoji">☀️</div><div class="meal-tag">Lunch</div><input class="meal-inp" id="m-0" oninput="saveMeals()"></div>
+      <div class="meal-row"><div class="meal-emoji">🍵</div><div class="meal-tag">Snack</div><input class="meal-inp" id="m-1" oninput="saveMeals()"></div>
+      <div class="meal-row"><div class="meal-emoji">🌙</div><div class="meal-tag">Dinner</div><input class="meal-inp" id="m-2" oninput="saveMeals()"></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(180,100,140,.08);font-size:11px;color:var(--ink-muted);">Tap any meal slot above to type what you had</div>
     </div>
     <div class="card">
       <div class="card-head"><div class="card-icon" style="background:#eaf3de;">📅</div><div><div class="card-title">Weekly ideas</div></div></div>
       <div style="font-size:13px;color:var(--ink-soft);line-height:2.2;">
-        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Mon</span><span>Poha · Fruit salad · Dal khichdi · Palak paneer</span></div>
-        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Tue</span><span>Idli sambar · Nuts · Rajma chawal · Stir-fry veg</span></div>
-        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Wed</span><span>Paratha + curd · Banana · Sprout bowl · Chole</span></div>
-        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Thu</span><span>Upma · Apple · Aloo gobi + roti · Moong dal</span></div>
-        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Fri</span><span>Smoothie bowl · Granola · Veg biryani · Pasta</span></div>
-        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Sat</span><span>Dosa + sambar · Fruit bowl · Paneer wrap · Soup</span></div>
-        <div style="display:flex;gap:10px;padding:5px 0;"><span style="font-weight:500;min-width:28px;">Sun</span><span>Pancakes 🥞 · Treat day! · Chole bhature ✨</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Mon</span><span>2 roti + paneer bhurji · Makhana · Dal makhni + rice</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Tue</span><span>Soybean roll · Fruit + nuts · 2 roti + palak paneer</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Wed</span><span>2 roti + paneer sabzi · Chai + toast · Veg pulav + raita</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Thu</span><span>Soybean roll · Curd + banana · 2 roti + dal makhni</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Fri</span><span>2 roti + paneer butter masala · Makhana · Veg biryani + raita</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(180,100,140,.08);"><span style="font-weight:500;min-width:28px;">Sat</span><span>Soybean roll · Chai + biscuits · Paneer pulav + salad</span></div>
+        <div style="display:flex;gap:10px;padding:5px 0;"><span style="font-weight:500;min-width:28px;">Sun</span><span>2 roti + shahi paneer · Treat snack 🍫 · Dal makhni + jeera rice</span></div>
       </div>
     </div>
   </div>
@@ -392,7 +386,7 @@ for(let i=0;i<14;i++){const p=document.createElement('div');p.className='petal';
         <input class="inp" id="rem-text" placeholder="Reminder text...">
         <input class="inp" id="rem-time" type="time" style="max-width:120px;">
       </div>
-      <div class="input-row">
+      <div class="input-row" style="margin-bottom:8px;">
         <select class="inp" id="rem-cat">
           <option value="#e07a96">💊 Medicine</option>
           <option value="#3d88d4">💧 Health</option>
@@ -400,8 +394,13 @@ for(let i=0;i<14;i++){const p=document.createElement('div');p.className='petal';
           <option value="#a98fd4">📚 Study</option>
           <option value="#c9922a">🌸 Self-care</option>
         </select>
-        <button class="btn btn-primary" onclick="addReminder()">Add</button>
       </div>
+      <div class="input-row" style="margin-bottom:12px;align-items:center;">
+        <div style="font-size:12px;color:var(--ink-muted);white-space:nowrap;">Repeat every</div>
+        <input class="inp" id="rem-weeks" type="number" min="0" placeholder="0" style="max-width:70px;text-align:center;">
+        <div style="font-size:12px;color:var(--ink-muted);white-space:nowrap;">weeks (0 = one-time)</div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;" onclick="addReminder()">Add reminder</button>
     </div>
     <div class="card">
       <div class="card-head"><div class="card-icon" style="background:#fce8ef;">⏰</div><div><div class="card-title">Your reminders</div></div></div>
@@ -615,6 +614,33 @@ for(let i=0;i<14;i++){const p=document.createElement('div');p.className='petal';
     <div class="with-love">♥ every date matters — Harshit</div>
   </div>
 
+  <!-- DRIVER TRACKER -->
+  <div class="section" id="sec-driver">
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#eaf3de;">🚗</div><div><div class="card-title">Driver holiday tracker</div><div class="card-subtitle" id="driver-month-lbl">Track which days he takes off</div></div></div>
+      <div class="input-row" style="margin-bottom:12px;align-items:flex-end;">
+        <div style="flex:1;"><div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Month</div>
+          <input class="inp" type="month" id="driver-month-sel">
+        </div>
+        <div style="flex:1;"><div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Day (date)</div>
+          <input class="inp" type="number" id="driver-day-inp" min="1" max="31" placeholder="e.g. 5">
+        </div>
+        <div style="flex:2;"><div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Reason (optional)</div>
+          <input class="inp" id="driver-reason-inp" placeholder="e.g. festival, sick leave">
+        </div>
+        <button class="btn btn-primary" onclick="addDriverHoliday()">Add</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#eaf3de;">📅</div><div><div class="card-title">Holiday log</div><div class="card-subtitle" id="driver-count-lbl"></div></div></div>
+      <div id="driver-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#eaf3de;">📊</div><div><div class="card-title">Monthly summary</div></div></div>
+      <div id="driver-summary"></div>
+    </div>
+  </div>
+
   <!-- BIRTHDAY -->
   <div class="section" id="sec-birthday">
     <div class="bday-hero" id="bday-hero"><div id="bday-dynamic-content"></div></div>
@@ -652,16 +678,18 @@ for(let i=0;i<14;i++){const p=document.createElement('div');p.className='petal';
 <script>
 const KEY='taniality_v1';
 const QUOTES=[
-  {text:"You are braver than you believe, stronger than you seem, and smarter than you think.",attr:"— A.A. Milne"},
-  {text:"With the new day comes new strength and new thoughts.",attr:"— Eleanor Roosevelt"},
-  {text:"She believed she could, so she did.",attr:"— R.S. Grey"},
-  {text:"Your present circumstances don't determine where you can go; they merely determine where you start.",attr:"— Nido Qubein"},
-  {text:"Every accomplishment starts with the decision to try.",attr:"— John F. Kennedy"},
-  {text:"You have been assigned this mountain to show others it can be moved.",attr:"— Mel Robbins"},
-  {text:"Be a girl with a mind, a woman with attitude, and a lady with class.",attr:""},
-  {text:"The secret of getting ahead is getting started.",attr:"— Mark Twain"},
-  {text:"Take care of your body. It's the only place you have to live.",attr:"— Jim Rohn"},
-  {text:"She is clothed in strength and dignity, and she laughs without fear of the future.",attr:"— Proverbs 31:25"}
+  {text:"In a sea of people, my eyes will always search for you.",attr:"— always, Harshit"},
+  {text:"You are my today and all of my tomorrows.",attr:"— for Tania"},
+  {text:"I love you not only for what you are, but for what I am when I am with you.",attr:"— Elizabeth Barrett Browning"},
+  {text:"Whatever our souls are made of, his and hers are the same.",attr:"— Emily Brontë"},
+  {text:"You are the first thought in my morning and the last in my night.",attr:"— always, Harshit"},
+  {text:"I would rather spend one lifetime with you than face all the ages of this world alone.",attr:"— J.R.R. Tolkien"},
+  {text:"Every love story is beautiful, but ours is my favourite.",attr:"— Harshit & Tania"},
+  {text:"You make ordinary moments feel like magic.",attr:"— for my Tania"},
+  {text:"Wherever you are is my home, my only home.",attr:"— Jane Eyre"},
+  {text:"I have found the one whom my soul loves.",attr:"— Song of Solomon 3:4"},
+  {text:"The best thing to hold onto in life is each other.",attr:"— Audrey Hepburn"},
+  {text:"You are my person. Always.",attr:"— Harshit"}
 ];
 
 function today(){return new Date().toDateString();}
@@ -674,7 +702,7 @@ function defaultState(){
   return {
     date:today(),
     foods:[],calGoal:1800,water:0,
-    meals:{0:'',1:'',2:'',3:'',4:''},
+    meals:{0:'',1:'',2:''},
     reminders:[
       {text:'Order / take Cetirizine',time:'09:00',color:'#e07a96',done:false},
       {text:'Drink water',time:'12:00',color:'#3d88d4',done:false},
@@ -705,7 +733,8 @@ function defaultState(){
     specialDates:[
       {date:'2025-10-13',name:'Our anniversary 💕',type:'deep'},
       {date:'2026-04-12',name:"Tania's birthday 🎂",type:'deep'}
-    ]
+    ],
+    driverHolidays:[]
   };
 }
 
@@ -747,6 +776,7 @@ function goTab(name,el){
   el.classList.add('active');
   if(name==='calendar')renderCalendar();
   if(name==='period')renderCycleResult();
+  if(name==='driver')renderDriver();
 }
 
 // HEADER
@@ -831,26 +861,49 @@ function renderWater(){
 }
 
 // MEALS
-function renderMeals(){for(let i=0;i<5;i++){const el=document.getElementById('m-'+i);if(el)el.value=S.meals[i]||'';}}
-function saveMeals(){for(let i=0;i<5;i++){const el=document.getElementById('m-'+i);if(el)S.meals[i]=el.value;}save();}
+function renderMeals(){for(let i=0;i<3;i++){const el=document.getElementById('m-'+i);if(el)el.value=S.meals[i]||'';}}
+function saveMeals(){for(let i=0;i<3;i++){const el=document.getElementById('m-'+i);if(el)S.meals[i]=el.value;}save();}
 
 // REMINDERS
 function renderReminders(){
   const el=document.getElementById('rem-list');
   if(!S.reminders.length){el.innerHTML='<p style="font-size:13px;color:var(--ink-muted);">No reminders yet!</p>';return;}
-  el.innerHTML=S.reminders.map((r,i)=>`<div class="rem-item ${r.done?'done':''}"><div class="rem-color-dot" style="background:${r.color}"></div><span class="rem-text">${r.text}</span><span class="rem-time">${r.time}</span><div class="rem-check ${r.done?'done':''}" onclick="toggleReminder(${i})">${r.done?'✓':''}</div></div>`).join('');
+  const now=new Date();
+  S.reminders.forEach(r=>{
+    if(r.weeks>0&&r.lastDone){const due=new Date(new Date(r.lastDone).getTime()+r.weeks*7*86400000);if(now>=due)r.done=false;}
+  });
+  el.innerHTML=S.reminders.map((r,i)=>{
+    const recurBadge=r.weeks>0?`<span style="font-size:10px;background:rgba(169,143,212,.15);color:var(--lav-deep);padding:2px 7px;border-radius:50px;white-space:nowrap;">↻ every ${r.weeks}w</span>`:'';
+    return `<div class="rem-item ${r.done?'done':''}">
+      <div class="rem-color-dot" style="background:${r.color}"></div>
+      <div style="flex:1;min-width:0;">
+        <div class="rem-text">${r.text}</div>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:3px;flex-wrap:wrap;">${r.time?`<span class="rem-time">${r.time}</span>`:''} ${recurBadge}</div>
+      </div>
+      <div class="rem-check ${r.done?'done':''}" onclick="toggleReminder(${i})">${r.done?'✓':''}</div>
+      <button class="food-del" onclick="deleteReminder(${i})" style="color:#c0386a;font-size:18px;margin-left:4px;">×</button>
+    </div>`;
+  }).join('');
   updateOverview();
 }
 function addReminder(){
   const t=document.getElementById('rem-text').value.trim();
-  const ti=document.getElementById('rem-time').value||'00:00';
+  const ti=document.getElementById('rem-time').value||'';
   const c=document.getElementById('rem-cat').value;
+  const w=parseInt(document.getElementById('rem-weeks').value)||0;
   if(!t){toast('Enter reminder text');return;}
-  S.reminders.push({text:t,time:ti,color:c,done:false});
+  S.reminders.push({text:t,time:ti,color:c,done:false,weeks:w,lastDone:null});
   document.getElementById('rem-text').value='';
+  document.getElementById('rem-time').value='';
+  document.getElementById('rem-weeks').value='';
   save();renderReminders();toast('Reminder added! ⏰');
 }
-function toggleReminder(i){S.reminders[i].done=!S.reminders[i].done;save();renderReminders();if(S.reminders[i].done)toast('✅ Done!');}
+function deleteReminder(i){S.reminders.splice(i,1);save();renderReminders();toast('Reminder deleted');}
+function toggleReminder(i){
+  S.reminders[i].done=!S.reminders[i].done;
+  if(S.reminders[i].done&&S.reminders[i].weeks>0)S.reminders[i].lastDone=new Date().toISOString();
+  save();renderReminders();if(S.reminders[i].done)toast('✅ Done!');
+}
 
 // SKINCARE
 function renderSkincare(){
@@ -861,7 +914,7 @@ function renderSkincare(){
       const k=prefix+i,chk=!!S.skinChecked[k];
       const bg=prefix==='am'?'#fbeaf0':'#ede0f7';
       const col=prefix==='am'?'#c0386a':'#6b35b0';
-      return `<div class="skin-step ${chk?'done':''}" onclick="toggleSkin('${k}')"><div class="skin-num" style="background:${bg};color:${col};">${i+1}</div><span class="skin-name">${s}</span><span class="skin-check-icon">${chk?'✅':'○'}</span></div>`;
+      return `<div class="skin-step ${chk?'done':''}"><div class="skin-num" style="background:${bg};color:${col};" onclick="toggleSkin('${k}')">${i+1}</div><span class="skin-name" onclick="toggleSkin('${k}')">${s}</span><span class="skin-check-icon" onclick="toggleSkin('${k}')">${chk?'✅':'○'}</span><button class="food-del" onclick="deleteSkinStep('${prefix}',${i})" style="color:#c0386a;font-size:18px;margin-left:4px;" title="Remove">×</button></div>`;
     }).join('');
   }
   list(S.skinAM,'am','skin-am-list','skin-am-prog');
@@ -876,6 +929,19 @@ function addSkinStep(){
   if(t==='am')S.skinAM.push(n);else S.skinPM.push(n);
   document.getElementById('skin-step-name').value='';
   save();renderSkincare();toast('Step added! 🌸');
+}
+function deleteSkinStep(prefix,i){
+  if(prefix==='am')S.skinAM.splice(i,1);else S.skinPM.splice(i,1);
+  // clean up checked state keys since indices shifted
+  const newChecked={};
+  Object.keys(S.skinChecked).forEach(k=>{
+    if(!k.startsWith(prefix)){newChecked[k]=S.skinChecked[k];return;}
+    const idx=parseInt(k.replace(prefix,''));
+    if(idx<i)newChecked[k]=S.skinChecked[k];
+    else if(idx>i)newChecked[prefix+(idx-1)]=S.skinChecked[k];
+  });
+  S.skinChecked=newChecked;
+  save();renderSkincare();toast('Step removed');
 }
 
 // CAT
@@ -1238,21 +1304,114 @@ function addBucketItem(){const v=document.getElementById('bucket-inp').value.tri
 function removeBucketItem(i){S.bucketList.splice(i,1);save();renderBucketList();}
 function renderBucketList(){document.getElementById('bday-bucket-list').innerHTML=(S.bucketList||[]).map((item,i)=>`<div class="food-item"><div class="food-dot" style="background:var(--lav-deep);"></div><span class="food-name">${item}</span><button class="food-del" onclick="removeBucketItem(${i})">×</button></div>`).join('')||'<p style="font-size:13px;color:var(--ink-muted);">Add your dreams!</p>';}
 
-// ===== SPLASH =====
-function hideSplash(){setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('hidden');setTimeout(()=>s.style.display='none',700);},1800);}
+// ===== DRIVER TRACKER =====
+function addDriverHoliday(){
+  const month=document.getElementById('driver-month-sel').value;
+  const day=parseInt(document.getElementById('driver-day-inp').value);
+  const reason=document.getElementById('driver-reason-inp').value.trim();
+  if(!month||!day||day<1||day>31){toast('Pick a month and day');return;}
+  if(!S.driverHolidays)S.driverHolidays=[];
+  const dateStr=`${month}-${String(day).padStart(2,'0')}`;
+  if(S.driverHolidays.find(h=>h.date===dateStr)){toast('Already logged!');return;}
+  S.driverHolidays.push({date:dateStr,reason,id:Date.now()});
+  S.driverHolidays.sort((a,b)=>a.date>b.date?1:-1);
+  document.getElementById('driver-day-inp').value='';
+  document.getElementById('driver-reason-inp').value='';
+  save();renderDriver();toast('Holiday logged 🚗');
+}
+function deleteDriverHoliday(id){
+  S.driverHolidays=S.driverHolidays.filter(h=>h.id!==id);
+  save();renderDriver();
+}
+function renderDriver(){
+  if(!S.driverHolidays)S.driverHolidays=[];
+  // Set month selector to current month if empty
+  const sel=document.getElementById('driver-month-sel');
+  if(!sel.value){const n=new Date();sel.value=`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}`;}
 
-// ===== INIT =====
+  // Group by month
+  const byMonth={};
+  S.driverHolidays.forEach(h=>{
+    const m=h.date.slice(0,7);
+    if(!byMonth[m])byMonth[m]=[];
+    byMonth[m].push(h);
+  });
+
+  // List
+  const listEl=document.getElementById('driver-list');
+  if(!S.driverHolidays.length){
+    listEl.innerHTML='<p style="font-size:13px;color:var(--ink-muted);">No holidays logged yet.</p>';
+  } else {
+    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    listEl.innerHTML=Object.keys(byMonth).sort().reverse().map(m=>{
+      const [y,mo]=m.split('-');
+      const label=`${months[parseInt(mo)-1]} ${y}`;
+      const items=byMonth[m].map(h=>{
+        const d=parseInt(h.date.slice(8));
+        return `<div class="food-item">
+          <div class="food-dot" style="background:var(--gold-deep);"></div>
+          <span class="food-name">${d} ${months[parseInt(mo)-1]}${h.reason?' — '+h.reason:''}</span>
+          <button class="food-del" onclick="deleteDriverHoliday(${h.id})" style="color:#c0386a;font-size:18px;">×</button>
+        </div>`;
+      }).join('');
+      return `<div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:500;color:var(--lav-deep);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">${label}</div>${items}</div>`;
+    }).join('');
+  }
+
+  // Summary by month
+  const sumEl=document.getElementById('driver-summary');
+  if(!Object.keys(byMonth).length){
+    sumEl.innerHTML='<p style="font-size:13px;color:var(--ink-muted);">No data yet.</p>';
+  } else {
+    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    sumEl.innerHTML=Object.keys(byMonth).sort().reverse().map(m=>{
+      const [y,mo]=m.split('-');
+      const count=byMonth[m].length;
+      const pct=Math.round(count/30*100);
+      return `<div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:13px;font-weight:500;color:var(--ink);">${months[parseInt(mo)-1]} ${y}</span>
+          <span style="font-size:13px;color:var(--gold-deep);">${count} day${count!==1?'s':''} off</span>
+        </div>
+        <div class="prog-track"><div class="prog-fill" style="background:linear-gradient(90deg,var(--gold),var(--gold-deep));width:${Math.min(100,pct)}%"></div></div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('driver-count-lbl').textContent=S.driverHolidays.length+' holiday'+(S.driverHolidays.length!==1?'s':'')+' logged total';
+}
+
+// ===== SPLASH — fast, no black screen =====
+function hideSplash(){
+  // Show splash only briefly; use requestAnimationFrame so content renders first
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{
+      const s=document.getElementById('splash');
+      if(s){s.classList.add('hidden');setTimeout(()=>{s.style.display='none';},500);}
+    },900);
+  });
+}
+
+// ===== INIT — lazy render inactive tabs =====
 function init(){
-  hideSplash();
+  // Render home tab immediately (visible on load)
   renderHeader();
   document.getElementById('cal-goal').value=S.calGoal;
-  renderCalories();renderWater();renderMeals();renderReminders();
-  renderSkincare();renderCat();renderBirthday();renderMessages();
-  renderDatePlans();renderGossip();renderCycleResult();
   updateOverview();
-  const{days,isToday}=getBirthdayInfo();
-  if(isToday||days<=3){const btn=document.getElementById('bday-nav-btn');if(btn&&!isToday)btn.style.boxShadow='0 0 0 2px var(--rose-deep)';}
+
+  // Render rest after first paint so splash fades smoothly
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{
+      renderCalories();renderWater();renderMeals();renderReminders();
+      renderSkincare();renderCat();renderBirthday();renderMessages();
+      renderDatePlans();renderGossip();renderCycleResult();renderDriver();
+      const{days,isToday}=getBirthdayInfo();
+      if(isToday||days<=3){const btn=document.getElementById('bday-nav-btn');if(btn&&!isToday)btn.style.boxShadow='0 0 0 2px var(--rose-deep)';}
+    },100);
+  });
+
+  hideSplash();
 }
+
 init();
 </script>
 </body>
