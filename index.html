@@ -38,12 +38,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 #splash .love-tag{font-size:11px;color:#e07a96;margin-top:4px;letter-spacing:.05em;}
 @keyframes splashPop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
 .wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 16px 80px;}
-.header{text-align:center;padding:36px 0 12px;animation:fadeUp .8s ease both;}
-.header-date{font-size:12px;letter-spacing:.15em;color:var(--ink-muted);text-transform:uppercase;margin-bottom:10px;}
-.header h1{font-family:'Playfair Display',serif;font-size:34px;color:var(--ink);line-height:1.2;}
+.header{text-align:center;padding:28px 0 16px;animation:fadeUp .8s ease both;}
+.header-date{font-size:11px;letter-spacing:.14em;color:var(--ink-muted);text-transform:uppercase;margin-bottom:8px;}
+.header h1{font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--ink);line-height:1.15;letter-spacing:-.01em;}
 .header h1 span{color:var(--rose-deep);font-style:italic;}
-.header-sub{font-size:13px;color:var(--ink-muted);margin-top:4px;}
-.header-love{font-size:11px;color:var(--rose-deep);margin-top:6px;letter-spacing:.06em;}
+.header-sub{font-size:13px;color:var(--rose-deep);margin-top:5px;letter-spacing:.04em;opacity:.85;}
+.header-love{display:none;}
 .overview-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;animation:fadeUp .8s .1s ease both;}
 .chip{background:var(--card-bg);border-radius:var(--radius-sm);padding:14px 8px;text-align:center;box-shadow:var(--shadow-sm);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.8);transition:transform .2s;}
 .chip:hover{transform:translateY(-2px);}
@@ -256,9 +256,8 @@ select.inp{appearance:none;}
 
   <div class="header">
     <div class="header-date" id="hdate"></div>
-    <h1>Taniality <span>✨</span></h1>
-    <div class="header-sub">Our little universe</div>
-    <div class="header-love">made with love by Harshit ♥</div>
+    <h1>Taniality</h1>
+    <div class="header-sub">Our little universe ♥</div>
   </div>
 
   <div class="overview-chips">
@@ -426,7 +425,7 @@ select.inp{appearance:none;}
         <button class="btn btn-primary" onclick="addSkinStep()">Add</button>
       </div>
     </div>
-    <div class="with-love">♥ made with love by Harshit</div>
+    <div class="with-love" style="display:none;"></div>
   </div>
 
   <!-- CAT PREP -->
@@ -459,25 +458,27 @@ select.inp{appearance:none;}
       </div>
       <div id="cat-log-list"></div>
     </div>
-    <div class="with-love">♥ you're going to crack CAT, Tania — Harshit believes in you</div>
+    <div class="with-love">♥ Harshit believes in you, Tania</div>
   </div>
 
   <!-- PERIOD CYCLE TRACKER -->
   <div class="section" id="sec-period">
     <div class="card">
       <div class="card-head"><div class="card-icon" style="background:#fce8ef;">🌙</div><div><div class="card-title">Period cycle tracker</div><div class="card-subtitle">Log your last period start date</div></div></div>
-      <div class="input-row" style="margin-bottom:14px;">
-        <div style="flex:1;">
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;">
+        <div>
           <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Last period started on</div>
           <input class="inp" type="date" id="period-start-input" style="width:100%;">
         </div>
-        <div style="flex:1;">
-          <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Cycle length (days)</div>
-          <input class="inp" type="number" id="cycle-len-input" value="28" min="21" max="40">
-        </div>
-        <div style="flex:1;">
-          <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Period duration</div>
-          <input class="inp" type="number" id="period-dur-input" value="5" min="2" max="10">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Cycle length (days)</div>
+            <input class="inp" type="number" id="cycle-len-input" value="28" min="21" max="40" style="width:100%;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">Period duration (days)</div>
+            <input class="inp" type="number" id="period-dur-input" value="5" min="2" max="10" style="width:100%;">
+          </div>
         </div>
       </div>
       <button class="btn btn-primary" style="width:100%;" onclick="saveCycle()">Save & Calculate</button>
@@ -514,7 +515,6 @@ select.inp{appearance:none;}
       <button class="btn btn-primary" style="width:100%;margin-bottom:12px;" onclick="addCycleNote()">Add note</button>
       <div id="cycle-notes-list"></div>
     </div>
-    <div class="with-love">♥ made with love by Harshit — take care of yourself, Tania</div>
   </div>
 
   <!-- MESSAGES FROM HARSHIT -->
@@ -557,7 +557,6 @@ select.inp{appearance:none;}
       <div class="card-head"><div class="card-icon" style="background:#d9c6f0;">📅</div><div><div class="card-title">Upcoming dates</div><div class="card-subtitle">Your plans with Harshit ♥</div></div></div>
       <div id="date-plans-list"></div>
     </div>
-    <div class="with-love">♥ every day with you is a date — Harshit</div>
   </div>
 
   <!-- GOSSIP STORER -->
@@ -611,7 +610,6 @@ select.inp{appearance:none;}
         <button class="btn btn-primary" onclick="addSpecialDate()">Add</button>
       </div>
     </div>
-    <div class="with-love">♥ every date matters — Harshit</div>
   </div>
 
   <!-- DRIVER TRACKER -->
@@ -652,12 +650,12 @@ select.inp{appearance:none;}
     </div>
     <div class="bday-wishes">
       <div class="card-head" style="margin-bottom:14px;"><div class="card-icon" style="background:#fce8ef;">💌</div><div><div class="card-title">A note from Harshit 💌</div></div></div>
-      <div class="wish-item"><span class="wish-emoji">🌸</span>Happy birthday Tania! Today the whole world is a little brighter because you're in it.</div>
-      <div class="wish-item"><span class="wish-emoji">💪</span>You are studying so hard for CAT and I am beyond proud of everything you are becoming.</div>
-      <div class="wish-item"><span class="wish-emoji">✨</span>You take care of yourself, you work on your goals, and you still make time to be the most amazing person I know.</div>
-      <div class="wish-item"><span class="wish-emoji">🎯</span>This year is your year. CAT, growth, health, happiness — all of it is coming your way.</div>
-      <div class="wish-item"><span class="wish-emoji">🥰</span>I made you this little app so every single day feels a little more organised and a little more loved. Because you deserve that every day.</div>
-      <div class="wish-item"><span class="wish-emoji">🎂</span>Here's to you, Tania. My favourite person. Happy birthday. ❤️ — Harshit</div>
+      <div class="wish-item"><span class="wish-emoji">🌸</span>Happy birthday, Tania. The day you were born, the world quietly became a more beautiful place.</div>
+      <div class="wish-item"><span class="wish-emoji">💕</span>Loving you is the easiest thing I have ever done. And I would choose you in every lifetime, every universe, every time.</div>
+      <div class="wish-item"><span class="wish-emoji">🌙</span>You are the person I want to call first when something happens. The one I want beside me when everything is quiet. My person.</div>
+      <div class="wish-item"><span class="wish-emoji">✨</span>You make ordinary days feel like something worth remembering. Just existing with you is my favourite thing.</div>
+      <div class="wish-item"><span class="wish-emoji">🥰</span>I built this little app for you so that every single day feels a little more yours — organised, loved, and taken care of. Because that's all I ever want for you.</div>
+      <div class="wish-item"><span class="wish-emoji">🎂</span>Happy birthday, my favourite person. Here's to you, Tania — all my love, always. ❤️ — Harshit</div>
     </div>
     <div class="card">
       <div class="card-head"><div class="card-icon" style="background:#fdf0f4;">🎁</div><div><div class="card-title">Birthday year bucket list</div></div></div>
